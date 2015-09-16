@@ -36,7 +36,7 @@ public final class LogUtils {
     public static void d(String msg, Object... args) {
         logger.d(SystemUtil.getStackTrace(), msg, args);
     }
-    public static void d(Object object) { logger.v(SystemUtil.getStackTrace(), object); }
+    public static void d(Object object) { logger.d(SystemUtil.getStackTrace(), object); }
 
     /**
      * info的输出
@@ -46,7 +46,7 @@ public final class LogUtils {
     public static void i(String msg, Object... args) {
         logger.d(SystemUtil.getStackTrace(), msg, args);
     }
-    public static void i(Object object) { logger.v(SystemUtil.getStackTrace(), object); }
+    public static void i(Object object) { logger.i(SystemUtil.getStackTrace(), object); }
 
     /**
      * warn的输出
@@ -54,9 +54,9 @@ public final class LogUtils {
      * @param args
      */
     public static void w(String msg, Object... args) {
-        logger.d(SystemUtil.getStackTrace(), msg, args);
+        logger.w(SystemUtil.getStackTrace(), msg, args);
     }
-    public static void w(Object object) { logger.v(SystemUtil.getStackTrace(), object); }
+    public static void w(Object object) { logger.w(SystemUtil.getStackTrace(), object); }
 
     /**
      * error的输出
@@ -64,9 +64,9 @@ public final class LogUtils {
      * @param args
      */
     public static void e(String msg, Object... args) {
-        logger.d(SystemUtil.getStackTrace(), msg, args);
+        logger.e(SystemUtil.getStackTrace(), msg, args);
     }
-    public static void e(Object object) { logger.v(SystemUtil.getStackTrace(), object); }
+    public static void e(Object object) { logger.e(SystemUtil.getStackTrace(), object); }
 
     /**
      * assert的输出
@@ -74,9 +74,9 @@ public final class LogUtils {
      * @param args
      */
     public static void wtf(String msg, Object... args) {
-        logger.d(SystemUtil.getStackTrace(), msg, args);
+        logger.wtf(SystemUtil.getStackTrace(), msg, args);
     }
-    public static void wtf(Object object) { logger.v(SystemUtil.getStackTrace(), object); }
+    public static void wtf(Object object) { logger.wtf(SystemUtil.getStackTrace(), object); }
 
     /**
      * 打印json

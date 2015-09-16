@@ -40,5 +40,6 @@
         android:text="connect"
         android:id="@+id/btn_connect"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:focusable="false"/>
 </RelativeLayout>
