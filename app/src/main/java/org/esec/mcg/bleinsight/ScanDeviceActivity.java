@@ -77,6 +77,9 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
         mBLEWrapper.stopScanning();
         invalidateOptionsMenu();
 
+        DeviceListAdapter.startUpdateRssiThread = true;
+        mDeviceListAdapter.updatePeriodicalyeRssi(false);
+
         mDeviceListAdapter.clearList();
     }
 
@@ -145,12 +148,14 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
     @Override
     public void uiDeviceFound(ScanResult scanResult) {
         mDeviceListAdapter.addDevice(scanResult);
-        mDeviceListAdapter.notifyDataSetChanged();
+//        mDeviceListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void uiStopScanning() {
         mScanning = false;
+        DeviceListAdapter.startUpdateRssiThread = true;
+        mDeviceListAdapter.updatePeriodicalyeRssi(false);
         invalidateOptionsMenu();
     }
 }

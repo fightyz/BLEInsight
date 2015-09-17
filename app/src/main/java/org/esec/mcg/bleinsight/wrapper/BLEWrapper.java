@@ -35,17 +35,8 @@ public class BLEWrapper {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            LogUtils.d(result);
             mScanDeviceUiCallbacks.uiDeviceFound(result);
         }
-
-//        @Override
-//        public void onBatchScanResults(List<ScanResult> results) {
-//            super.onBatchScanResults(results);
-//            LogUtils.d(results);
-//        }
-
-
     };
 
     public BLEWrapper(Context context) {
@@ -90,7 +81,7 @@ public class BLEWrapper {
     }
 
     /**
-     * 获得BluetoothManager & BluetoothAdapter的实例
+     * 获得BluetoothManager & BluetoothAdapter & BluetoothLeScanner的实例
      * @return
      */
     public boolean initialize() {
@@ -132,7 +123,6 @@ public class BLEWrapper {
 //                new ScanSettings.Builder().setReportDelay(100).build(),
 //                mScanCallback);
         mBluetoothLeScanner.startScan(mScanCallback);
-
     }
 
     /**
