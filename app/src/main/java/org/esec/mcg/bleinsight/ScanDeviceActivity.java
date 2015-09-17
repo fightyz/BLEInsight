@@ -2,13 +2,10 @@ package org.esec.mcg.bleinsight;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,13 +23,12 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
     public BLEWrapper mBLEWrapper;
-    public static boolean mScanning = false;
+    public static boolean mScanning = false; /* actionBar上start&stop的开关 */
     private ListView deviceListView;
     private DeviceListAdapter mDeviceListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        ListView deviceListView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
 
@@ -65,22 +61,16 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
 
         mBLEWrapper.initialize();
 
-        mScanning = true;
-        mBLEWrapper.startScanning(SCANNING_TIMEOUT);
+        startScanningInit();
         invalidateOptionsMenu();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mScanning = false;
+        stopScanningInit();
         mBLEWrapper.stopScanning();
         invalidateOptionsMenu();
-
-        DeviceListAdapter.startUpdateRssiThread = true;
-        mDeviceListAdapter.updatePeriodicalyeRssi(false);
-
-        mDeviceListAdapter.clearList();
     }
 
     @Override
@@ -109,12 +99,10 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
 
         switch (id) {
             case R.id.scanning_start:
-                mScanning = true;
-                mDeviceListAdapter.clearList();
-                mBLEWrapper.startScanning(SCANNING_TIMEOUT);
+                startScanningInit();
                 break;
             case R.id.scanning_stop:
-                mScanning = false;
+                stopScanningInit();
                 mBLEWrapper.stopScanning();
                 break;
         }
@@ -135,6 +123,24 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * 开始扫描前的一些初始化工作
+     */
+    public void startScanningInit() {
+        DeviceListAdapter.startUpdateRssiThread = true;
+        mScanning = true;
+        mDeviceListAdapter.clearList();
+        mBLEWrapper.startScanning(SCANNING_TIMEOUT);
+    }
+
+    /**
+     * 结束扫描后的一些初始化工作
+     */
+    public void stopScanningInit() {
+        mScanning = false;
+        mDeviceListAdapter.updatePeriodicalyRssi(false);
+    }
+
     private void BLEMissing() {
         Toast.makeText(this, "BLE Hardware is required but not available!", Toast.LENGTH_LONG).show();
         finish();
@@ -148,14 +154,11 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
     @Override
     public void uiDeviceFound(ScanResult scanResult) {
         mDeviceListAdapter.addDevice(scanResult);
-//        mDeviceListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void uiStopScanning() {
-        mScanning = false;
-        DeviceListAdapter.startUpdateRssiThread = true;
-        mDeviceListAdapter.updatePeriodicalyeRssi(false);
+        stopScanningInit();
         invalidateOptionsMenu();
     }
 }

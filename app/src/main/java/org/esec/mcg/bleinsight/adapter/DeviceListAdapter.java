@@ -16,11 +16,8 @@ import android.widget.TextView;
 import org.esec.mcg.bleinsight.PeripheralActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
-import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
-import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -76,11 +73,11 @@ public class DeviceListAdapter extends BaseAdapter {
 
         if (startUpdateRssiThread) {
             startUpdateRssiThread = false;
-            updatePeriodicalyeRssi(true);
+            updatePeriodicalyRssi(true);
         }
     }
 
-    public void updatePeriodicalyeRssi(final boolean repeat) {
+    public void updatePeriodicalyRssi(final boolean repeat) {
         repeatEnable = repeat;
         if (repeatEnable == false) {
             startUpdateRssiThread = true;
@@ -99,7 +96,7 @@ public class DeviceListAdapter extends BaseAdapter {
                     }
                 } // 设备列表遍历完成
                 notifyDataSetChanged(); /* rssi值列表有更新，通知界面刷新 */
-                updatePeriodicalyeRssi(repeatEnable);
+                updatePeriodicalyRssi(repeatEnable);
             }
         };
         rssiUpdateHandler.postDelayed(updateRssiThread, 1000);
@@ -184,10 +181,11 @@ public class DeviceListAdapter extends BaseAdapter {
                 intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_BOND, bondStateString);
 
                 if (ScanDeviceActivity.mScanning) {
-                    ScanDeviceActivity.mScanning = false;
-                    mParent.invalidateOptionsMenu();
+//                    ScanDeviceActivity.mScanning = false;
+//                    mParent.stopScanningInit();
+//                    mParent.invalidateOptionsMenu();
                     mParent.mBLEWrapper.stopScanning();
-                    updatePeriodicalyeRssi(false);
+//                    updatePeriodicalyRssi(false);
                 }
 
                 mParent.startActivity(intent);

@@ -114,7 +114,7 @@ public class BLEWrapper {
         Runnable timeout = new Runnable() {
             @Override
             public void run() {
-                mBluetoothLeScanner.stopScan(mScanCallback);
+                stopScanning();
                 mScanDeviceUiCallbacks.uiStopScanning();
             }
         };
