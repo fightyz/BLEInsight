@@ -181,11 +181,7 @@ public class DeviceListAdapter extends BaseAdapter {
                 intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_BOND, bondStateString);
 
                 if (ScanDeviceActivity.mScanning) {
-//                    ScanDeviceActivity.mScanning = false;
-//                    mParent.stopScanningInit();
-//                    mParent.invalidateOptionsMenu();
                     mParent.mBLEWrapper.stopScanning();
-//                    updatePeriodicalyRssi(false);
                 }
 
                 mParent.startActivity(intent);

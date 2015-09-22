@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 列表展开时，灰色向上箭头-->
+    <item android:drawable="@drawable/ic_arrowup"
+          android:state_checked="true"/>
+
+    <!-- 列表收起时，红色向下箭头-->
+    <item android:drawable="@drawable/ic_arrowdown"
+          android:state_checked="false"/>
+
+</selector>
