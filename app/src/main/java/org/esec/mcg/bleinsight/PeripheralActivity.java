@@ -47,9 +47,7 @@ public class PeripheralActivity extends AppCompatActivity {
         mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
         mDeviceRssiView.setText(mDeviceRSSI);
-        // TODO
-        // 这里actionBar有问题？
-//        getActionBar().setTitle(mDeviceName);
+        getSupportActionBar().setTitle(mDeviceName);
     }
 
     @Override
