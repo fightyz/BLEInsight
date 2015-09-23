@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -39,6 +40,7 @@ public class BLEWrapper {
     private Handler mHandler = new Handler();
     private Queue<Integer> rssiQueue;
     private List<BluetoothGattService> mBluetoothGattServices = null;
+    private BluetoothGattService mBluetoothSelectedService = null;
 
     private String mDeviceAddress = "";
     private boolean mConnected = false;
@@ -66,6 +68,9 @@ public class BLEWrapper {
                 startServicesDiscovery();
                 startMonitoringRssiValue();
 
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                mConnected = false;
+                mInsightDevcieUiCallbacks.uiDeviceDisconnected(mBluetoothGatt, mBluetoothDevice);
             }
         }
 
@@ -267,11 +272,23 @@ public class BLEWrapper {
         if (mBluetoothGatt != null) mBluetoothGatt.discoverServices();
     }
 
+    /**
+     * 获取service列表
+     */
     public void getSupportedServices() {
         if (mBluetoothGattServices != null && mBluetoothGattServices.size() > 0) mBluetoothGattServices.clear();
 
         if (mBluetoothGatt != null) mBluetoothGattServices = mBluetoothGatt.getServices();
 
         mInsightDevcieUiCallbacks.uiAvailableServices(mBluetoothGatt, mBluetoothDevice, mBluetoothGattServices);
+    }
+
+    public void getCharacteristicsForService(final BluetoothGattService service) {
+        if (service == null)  return;
+        List<BluetoothGattCharacteristic> chars = null;
+
+        chars = service.getCharacteristics();
+        mInsightDevcieUiCallbacks.uiCharacteristicsForService(mBluetoothGatt, mBluetoothDevice, service, chars);
+        mBluetoothSelectedService = service;
     }
 }

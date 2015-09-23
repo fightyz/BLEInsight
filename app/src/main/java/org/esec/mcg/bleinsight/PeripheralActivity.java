@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +65,16 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
         mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
         mDeviceRssiView.setText(mDeviceRSSI);
+
+//        deviceDetailElv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//            @Override
+//            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+//                LogUtils.d("点击了service");
+//                BluetoothGattService service = (BluetoothGattService) mDeviceDetailAdapter.getGroup(groupPosition);
+//                mBLEWrapper.getCharacteristicsForService(service);
+//                return true;
+//            }
+//        });
 
         getSupportActionBar().setTitle(mDeviceName);
     }
@@ -181,6 +194,19 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
 
                 for (BluetoothGattService service : services) {
                     mDeviceDetailAdapter.addService(service);
+                }
+                mDeviceDetailAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void uiCharacteristicsForService(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, final List<BluetoothGattCharacteristic> characteristics) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (BluetoothGattCharacteristic ch : characteristics) {
+                    mDeviceDetailAdapter.addCharacteristic(ch);
                 }
                 mDeviceDetailAdapter.notifyDataSetChanged();
             }
