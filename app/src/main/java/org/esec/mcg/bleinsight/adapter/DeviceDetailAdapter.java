@@ -7,8 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
+
+import org.esec.mcg.bleinsight.R;
+import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by yz on 2015/9/22.
@@ -20,12 +25,19 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
 
     public DeviceDetailAdapter(Activity parent) {
         super();
+        mBTService = new ArrayList<BluetoothGattService>();
+        mInflater = parent.getLayoutInflater();
+    }
 
+    public void addService(BluetoothGattService service) {
+        if (mBTService.contains(service) == false) {
+            mBTService.add(service);
+        }
     }
 
     @Override
     public int getGroupCount() {
-        return 0;
+        return mBTService.size();
     }
 
     @Override
@@ -35,7 +47,7 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return null;
+        return "group-" + groupPosition;
     }
 
     @Override
@@ -45,7 +57,7 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
@@ -55,12 +67,31 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        return null;
+        View v = convertView;
+        ViewHolder holder;
+        if (v == null) {
+            v = mInflater.inflate(R.layout.service_list, null);
+            holder = new ViewHolder(v);
+            v.setTag(holder);
+        } else {
+            holder = (ViewHolder) v.getTag();
+        }
+
+        BluetoothGattService service = mBTService.get(groupPosition);
+        String uuid = service.getUuid().toString().toLowerCase(Locale.getDefault());
+        String name = BLENameResolver.resolveServiceName(uuid);
+        String type = (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY) ? "Primary" : "Secondary";
+
+        holder.serviceName.setText(name);
+        holder.serviceUuid.setText(uuid);
+        holder.serviceType.setText(type);
+
+        return v;
     }
 
     @Override
@@ -71,5 +102,18 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    private class ViewHolder {
+
+        TextView serviceName;
+        TextView serviceUuid;
+        TextView serviceType;
+
+        public ViewHolder(View v) {
+            serviceName = (TextView)v.findViewById(R.id.service_name);
+            serviceUuid = (TextView)v.findViewById(R.id.service_uuid);
+            serviceType = (TextView)v.findViewById(R.id.service_type);
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -37,12 +38,15 @@ public class BLEWrapper {
     private BluetoothDevice mBluetoothDevice = null;
     private Handler mHandler = new Handler();
     private Queue<Integer> rssiQueue;
+    private List<BluetoothGattService> mBluetoothGattServices = null;
 
     private String mDeviceAddress = "";
     private boolean mConnected = false;
 
     private Handler mTimerHandler = new Handler();
     private boolean mTimerEnabled = false;
+
+    public List<BluetoothGattService> getCachedServices() {return mBluetoothGattServices;}
 
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
@@ -59,7 +63,7 @@ public class BLEWrapper {
                 mConnected = true;
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
 
-//                startServicesDiscovery();
+                startServicesDiscovery();
                 startMonitoringRssiValue();
 
             }
@@ -72,7 +76,12 @@ public class BLEWrapper {
             }
         }
 
-
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                getSupportedServices();
+            }
+        }
     };
 
     public BLEWrapper(Context context) {
@@ -249,5 +258,20 @@ public class BLEWrapper {
                 readPeriodicalyRssiValue(mTimerEnabled);
             }
         }, RSSI_UPDATE_TIME_INTERVAL);
+    }
+
+    /**
+     * 请求发现设备上提供的所有services
+     */
+    public void startServicesDiscovery() {
+        if (mBluetoothGatt != null) mBluetoothGatt.discoverServices();
+    }
+
+    public void getSupportedServices() {
+        if (mBluetoothGattServices != null && mBluetoothGattServices.size() > 0) mBluetoothGattServices.clear();
+
+        if (mBluetoothGatt != null) mBluetoothGattServices = mBluetoothGatt.getServices();
+
+        mInsightDevcieUiCallbacks.uiAvailableServices(mBluetoothGatt, mBluetoothDevice, mBluetoothGattServices);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import org.esec.mcg.bleinsight.adapter.DeviceDetailAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
+
+import java.util.List;
 
 public class PeripheralActivity extends AppCompatActivity implements InsightDeviceUiCallbacks{
 
@@ -165,6 +168,21 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
             public void run() {
                 mDeviceRSSI = rssi + "db";
                 mDeviceRssiView.setText(mDeviceRSSI);
+            }
+        });
+    }
+
+    @Override
+    public void uiAvailableServices(BluetoothGatt gatt, BluetoothDevice device, final List<BluetoothGattService> services) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                deviceDetailElv.setAdapter(mDeviceDetailAdapter);
+
+                for (BluetoothGattService service : services) {
+                    mDeviceDetailAdapter.addService(service);
+                }
+                mDeviceDetailAdapter.notifyDataSetChanged();
             }
         });
     }

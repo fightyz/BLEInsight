@@ -9,24 +9,24 @@
         android:layout_height="wrap_content"
         android:background="@drawable/card_background_sqr_white">
 
-        <ToggleButton
-            android:id="@+id/expand_colapse"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/togglearrow"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:textOff=""
-            android:textOn=""/>
+        <!--<ToggleButton-->
+            <!--android:id="@+id/expand_colapse"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@drawable/togglearrow"-->
+            <!--android:focusable="false"-->
+            <!--android:focusableInTouchMode="false"-->
+            <!--android:textOff=""-->
+            <!--android:textOn=""/>-->
 
         <TextView
             android:id="@+id/service_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/expand_colapse"
-            android:paddingLeft="5dp"
+
+            android:paddingLeft="20dp"
             android:paddingTop="2dp"
             android:text="service name"
             android:textSize="15sp"/>
@@ -36,9 +36,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/service_name"
-            android:layout_toRightOf="@+id/expand_colapse"
+
             android:paddingBottom="5dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="SERVICE UUID"
             android:textSize="15sp"/>
@@ -48,9 +48,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/service_uuid"
-            android:layout_toRightOf="@+id/expand_colapse"
+
             android:paddingBottom="5dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="20dp"
             android:text="PRIMARY SERVICE"
             android:textSize="15sp"/>
 
