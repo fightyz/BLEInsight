@@ -88,6 +88,15 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        mBLEWrapper.stopMonitoringRssiValue();
+        mBLEWrapper.disconnect();
+        mBLEWrapper.close();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_peripheral, menu);
@@ -135,6 +144,16 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
             @Override
             public void run() {
                 mDeviceStatusView.setText("connected");
+            }
+        });
+    }
+
+    @Override
+    public void uiDeviceDisconnected(BluetoothGatt gatt, BluetoothDevice device) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceStatusView.setText("disconnected");
             }
         });
     }

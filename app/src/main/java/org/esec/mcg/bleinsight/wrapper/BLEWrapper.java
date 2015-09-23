@@ -199,6 +199,22 @@ public class BLEWrapper {
     }
 
     /**
+     * 断开连接，但是之后可以重连
+     */
+    public void disconnect() {
+        if (mBluetoothGatt != null) mBluetoothGatt.disconnect();
+        mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
+    }
+
+    /**
+     * 完全关掉gatt客户端
+     */
+    public void close() {
+        if (mBluetoothGatt != null) mBluetoothGatt.close();
+        mBluetoothGatt = null;
+    }
+
+    /**
      * 开始监听rssi值
      */
     public void startMonitoringRssiValue() {

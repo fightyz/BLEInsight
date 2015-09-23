@@ -9,4 +9,5 @@ import android.bluetooth.BluetoothGatt;
 public interface InsightDeviceUiCallbacks {
     public void uiDeviceConnected(final BluetoothGatt gatt, final BluetoothDevice device);
     public void uiNewRssiAvailable(final BluetoothGatt gatt, final BluetoothDevice device, final int rssi);
+    public void uiDeviceDisconnected(final BluetoothGatt gatt, final BluetoothDevice device);
 }
