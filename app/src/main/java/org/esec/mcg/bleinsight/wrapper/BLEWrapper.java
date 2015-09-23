@@ -2,7 +2,10 @@ package org.esec.mcg.bleinsight.wrapper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
@@ -25,11 +28,17 @@ public class BLEWrapper {
 
     private Context mContext;
     private ScanDeviceUiCallbacks mScanDeviceUiCallbacks;
+    private InsightDeviceUiCallbacks mInsightDevcieUiCallbacks;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBluetoothLeScanner;
+    private BluetoothGatt mBluetoothGatt = null;
+    private BluetoothDevice mBluetoothDevice = null;
     private Handler mHandler = new Handler();
     private Queue<Integer> rssiQueue;
+
+    private String mDeviceAddress = "";
+    private boolean mConnected = false;
 
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
@@ -39,16 +48,37 @@ public class BLEWrapper {
         }
     };
 
+    private final BluetoothGattCallback mBleCallback = new BluetoothGattCallback() {
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                mConnected = true;
+                mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
+
+//                startServicesDiscovery();
+
+            }
+        }
+    };
+
     public BLEWrapper(Context context) {
         this.mContext = context;
     }
 
     /**
-     * 设置ui的callback
+     * 设置扫描设备时ui的callback
      * @param scanDeviceUiCallbacks ui的callback，调用者须实现
      */
     public void setScanDeviceUiCallbacks(ScanDeviceUiCallbacks scanDeviceUiCallbacks) {
         this.mScanDeviceUiCallbacks = scanDeviceUiCallbacks;
+    }
+
+    /**
+     * 设置发现设备service和characteristic的ui的callback
+     * @param insightDeviceUiCallbacks ui的callback，调用者须实现
+     */
+    public void setInsightDeviceUiCallbacks(InsightDeviceUiCallbacks insightDeviceUiCallbacks) {
+        this.mInsightDevcieUiCallbacks = insightDeviceUiCallbacks;
     }
 
     /**
@@ -130,5 +160,27 @@ public class BLEWrapper {
      */
     public void stopScanning() {
         mBluetoothLeScanner.stopScan(mScanCallback);
+    }
+
+    /**
+     * 连接指定地址的设备
+     * @param deviceAddress 需要连接的设备地址
+     * @return
+     */
+    public boolean connect(final String deviceAddress) {
+        if (mBluetoothAdapter == null || deviceAddress == null) return false;
+        mDeviceAddress = deviceAddress;
+
+        // 判断是重新连接还是新建连接
+        if (mBluetoothGatt != null && mBluetoothGatt.getDevice().getAddress().equals(deviceAddress)) {
+            return mBluetoothGatt.connect();
+        } else {
+            mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mDeviceAddress);
+            if (mBluetoothDevice == null) {
+                return false;
+            }
+            mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, false, mBleCallback);
+        }
+        return true;
     }
 }

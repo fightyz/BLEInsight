@@ -59,7 +59,10 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
             startActivityForResult(enableBtIntent, ENABLE_BT_REQUEST_ID);
         }
 
-        mBLEWrapper.initialize();
+        if (mBLEWrapper.initialize() == false) {
+            finish();
+        }
+
 
         startScanningInit();
         invalidateOptionsMenu();

@@ -1,35 +1,47 @@
 package org.esec.mcg.bleinsight;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.esec.mcg.bleinsight.adapter.DeviceDetailAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
+import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
-import org.w3c.dom.Text;
 
-public class PeripheralActivity extends AppCompatActivity {
+public class PeripheralActivity extends AppCompatActivity implements InsightDeviceUiCallbacks{
 
     public static final String EXTRAS_DEVICE_NAME       = "BLE_DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS    = "BLE_DEVICE_ADDRESS";
     public static final String EXTRAS_DEVICE_RSSI       = "BLE_DEVICE_RSSI";
     public static final String EXTRAS_DEVICE_BOND       = "BLE_DEVICE_BOND";
 
+    private static final int ENABLE_BT_REQUEST_ID = 1;
+
     private String mDeviceName;
     private String mDeviceAddress;
     private String mDeviceRSSI;
 
-    private BLEWrapper mBleWrapper;
+    private BLEWrapper mBLEWrapper;
 
     private TextView mDeviceNameView;
     private TextView mDeviceAddressView;
     private TextView mDeviceRssiView;
     private TextView mDeviceStatusView;
+
+    private ExpandableListView deviceDetailElv;
+
+    private DeviceDetailAdapter mDeviceDetailAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +59,32 @@ public class PeripheralActivity extends AppCompatActivity {
         mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
         mDeviceRssiView.setText(mDeviceRSSI);
+
         getSupportActionBar().setTitle(mDeviceName);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(this);
+        mBLEWrapper.setInsightDeviceUiCallbacks(this);
+
+        if (mBLEWrapper.isBtEnabled() == false) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, ENABLE_BT_REQUEST_ID);
+        }
+
+        if (mBLEWrapper.initialize() == false) {
+            finish();
+        }
+
+        if (mDeviceDetailAdapter == null) mDeviceDetailAdapter = new DeviceDetailAdapter(this);
+
+        deviceDetailElv.setFocusable(false);
+        deviceDetailElv.setAdapter(mDeviceDetailAdapter);
+
+        mDeviceStatusView.setText("connecting...");
+        mBLEWrapper.connect(mDeviceAddress);
     }
 
     @Override
@@ -73,11 +110,37 @@ public class PeripheralActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ENABLE_BT_REQUEST_ID) {
+            if (requestCode == Activity.RESULT_CANCELED) {
+                BLEDisabled();
+                return;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void connectViewsVariables() {
         mDeviceNameView = (TextView) findViewById(R.id.peripheral_name);
         mDeviceAddressView = (TextView) findViewById(R.id.peripheral_address);
         mDeviceRssiView = (TextView) findViewById(R.id.peripheral_rssi);
         mDeviceStatusView = (TextView) findViewById(R.id.peripheral_status);
+        deviceDetailElv = (ExpandableListView) findViewById(R.id.device_detail_list_view);
+    }
 
+    @Override
+    public void uiDeviceConnected(BluetoothGatt gatt, BluetoothDevice device) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceStatusView.setText("connected");
+            }
+        });
+    }
+
+    private void BLEDisabled() {
+        Toast.makeText(this, "Sorry, BT has to be turned ON for us to work!", Toast.LENGTH_LONG).show();
+        finish();
     }
 }
