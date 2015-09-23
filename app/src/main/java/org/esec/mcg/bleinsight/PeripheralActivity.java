@@ -139,6 +139,17 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
         });
     }
 
+    @Override
+    public void uiNewRssiAvailable(final BluetoothGatt gatt, final BluetoothDevice device, final int rssi) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceRSSI = rssi + "db";
+                mDeviceRssiView.setText(mDeviceRSSI);
+            }
+        });
+    }
+
     private void BLEDisabled() {
         Toast.makeText(this, "Sorry, BT has to be turned ON for us to work!", Toast.LENGTH_LONG).show();
         finish();

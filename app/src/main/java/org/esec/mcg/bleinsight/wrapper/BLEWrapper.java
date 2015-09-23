@@ -25,6 +25,7 @@ import java.util.Queue;
  */
 public class BLEWrapper {
     private static final long SCANNING_TIMEOUT = 5 * 1000;
+    private static final int RSSI_UPDATE_TIME_INTERVAL = 1500; // 1.5 seconds
 
     private Context mContext;
     private ScanDeviceUiCallbacks mScanDeviceUiCallbacks;
@@ -39,6 +40,9 @@ public class BLEWrapper {
 
     private String mDeviceAddress = "";
     private boolean mConnected = false;
+
+    private Handler mTimerHandler = new Handler();
+    private boolean mTimerEnabled = false;
 
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
@@ -56,9 +60,19 @@ public class BLEWrapper {
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
 
 //                startServicesDiscovery();
+                startMonitoringRssiValue();
 
             }
         }
+
+        @Override
+        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                mInsightDevcieUiCallbacks.uiNewRssiAvailable(mBluetoothGatt, mBluetoothDevice, rssi);
+            }
+        }
+
+
     };
 
     public BLEWrapper(Context context) {
@@ -182,5 +196,42 @@ public class BLEWrapper {
             mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, false, mBleCallback);
         }
         return true;
+    }
+
+    /**
+     * 开始监听rssi值
+     */
+    public void startMonitoringRssiValue() {
+        readPeriodicalyRssiValue(true);
+    }
+
+    public void stopMonitoringRssiValue() {
+        readPeriodicalyRssiValue(false);
+    }
+
+    /**
+     * 周期性地读取更新rssi值
+     * @param repeat
+     */
+    public void readPeriodicalyRssiValue(final boolean repeat) {
+        mTimerEnabled = repeat;
+
+        if (mConnected == false || mBluetoothGatt == null || mTimerEnabled == false) {
+            mTimerEnabled = false;
+            return;
+        }
+
+        mTimerHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mBluetoothGatt == null || mBluetoothAdapter == null || mConnected == false) {
+                    mTimerEnabled = false;
+                    return;
+                }
+
+                mBluetoothGatt.readRemoteRssi();
+                readPeriodicalyRssiValue(mTimerEnabled);
+            }
+        }, RSSI_UPDATE_TIME_INTERVAL);
     }
 }
