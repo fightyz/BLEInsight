@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.ButtonFlat;
+import com.gc.materialdesign.views.CheckBox;
+
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
 import org.esec.mcg.utils.logger.LogUtils;
@@ -125,8 +128,50 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
         if (characteristic != null) {
             String uuid = characteristic.getUuid().toString().toLowerCase(Locale.getDefault());
             String name = BLENameResolver.resolveCharacteristicName(uuid);
+
+            int properties = characteristic.getProperties();
+            StringBuilder propertiesString = new StringBuilder();
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_BROADCAST) != 0)
+                propertiesString.append("BROADCAST, ");
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS) != 0)
+                propertiesString.append("EXTENDED_PROPS, ");
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                propertiesString.append("INDICATE, ");
+                holder.characteristicCccd.setVisibility(View.VISIBLE);
+                holder.characteristicCccdText.setText("INDICATE");
+                holder.characteristicCccdText.setVisibility(View.VISIBLE);
+            }
+
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                propertiesString.append("NOTIFY, ");
+                holder.characteristicCccd.setVisibility(View.VISIBLE);
+                holder.characteristicCccdText.setVisibility(View.VISIBLE);
+            }
+
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
+                propertiesString.append("READ, ");
+                holder.characteristicRead.setVisibility(View.VISIBLE);
+            }
+
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE) != 0)
+                propertiesString.append("SIGNED WRITE, ");
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) {
+                propertiesString.append("WRITE, ");
+                holder.characteristicWrite.setVisibility(View.VISIBLE);
+            }
+
+            if ((properties & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0)
+                propertiesString.append("WRITE NO RESPONSE, ");
+
             holder.characteristicName.setText(name);
             holder.characteristicUuid.setText(uuid);
+            holder.characteristicProperties.setText(propertiesString.substring(0, propertiesString.length() - 2));
+            holder.characteristicRead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtils.d("点击了read按钮");
+                }
+            });
         }
         return v;
     }
@@ -146,6 +191,11 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
         TextView characteristicUuid;
         TextView characteristicProperties;
 
+        ButtonFlat characteristicRead;
+        ButtonFlat characteristicWrite;
+        TextView characteristicCccdText;
+        CheckBox characteristicCccd;
+
 
         public ViewHolder(View v) {
             serviceName = (TextView)v.findViewById(R.id.service_name);
@@ -155,6 +205,11 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
             characteristicName = (TextView) v.findViewById(R.id.characteristic_name);
             characteristicUuid = (TextView) v.findViewById(R.id.characteristic_uuid_value);
             characteristicProperties = (TextView) v.findViewById(R.id.characteristic_properties_value);
+
+            characteristicRead = (ButtonFlat) v.findViewById(R.id.read_button);
+            characteristicWrite = (ButtonFlat) v.findViewById(R.id.write_button);
+            characteristicCccdText = (TextView) v.findViewById(R.id.cccd_text);
+            characteristicCccd = (CheckBox) v.findViewById(R.id.cccd_check);
         }
     }
 }

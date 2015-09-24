@@ -95,8 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="99"
-                android:text="Disconnected"
-                android:textStyle="italic"/>
+                />
 
         </TableRow>
 
@@ -108,9 +107,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/peripheral_header"
         android:dividerHeight="2dp"
-        android:background="#f4f4f4"
-        android:childDivider="#00000000"
-        android:cacheColorHint="#00000000"
+        android:childDivider="@drawable/child_separator"
         android:scrollbarSize="0dp"
         android:divider="#00000000"/>
 
