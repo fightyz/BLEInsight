@@ -8,10 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.gc.materialdesign.views.ButtonFlat;
-import com.gc.materialdesign.views.CheckBox;
 
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
@@ -191,8 +190,8 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
         TextView characteristicUuid;
         TextView characteristicProperties;
 
-        ButtonFlat characteristicRead;
-        ButtonFlat characteristicWrite;
+        Button characteristicRead;
+        Button characteristicWrite;
         TextView characteristicCccdText;
         CheckBox characteristicCccd;
 
@@ -206,8 +205,8 @@ public class DeviceDetailAdapter extends BaseExpandableListAdapter {
             characteristicUuid = (TextView) v.findViewById(R.id.characteristic_uuid_value);
             characteristicProperties = (TextView) v.findViewById(R.id.characteristic_properties_value);
 
-            characteristicRead = (ButtonFlat) v.findViewById(R.id.read_button);
-            characteristicWrite = (ButtonFlat) v.findViewById(R.id.write_button);
+            characteristicRead = (Button) v.findViewById(R.id.read_button);
+            characteristicWrite = (Button) v.findViewById(R.id.write_button);
             characteristicCccdText = (TextView) v.findViewById(R.id.cccd_text);
             characteristicCccd = (CheckBox) v.findViewById(R.id.cccd_check);
         }

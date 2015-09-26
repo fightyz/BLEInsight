@@ -25,7 +25,7 @@ import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.List;
 
-public class PeripheralActivity extends AppCompatActivity implements InsightDeviceUiCallbacks{
+public class PeripheralActivity extends Activity implements InsightDeviceUiCallbacks{
 
     public static final String EXTRAS_DEVICE_NAME       = "BLE_DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS    = "BLE_DEVICE_ADDRESS";
@@ -53,7 +53,6 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_peripheral);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         connectViewsVariables();
 
@@ -76,7 +75,6 @@ public class PeripheralActivity extends AppCompatActivity implements InsightDevi
 //            }
 //        });
 
-        getSupportActionBar().setTitle(mDeviceName);
     }
 
     @Override

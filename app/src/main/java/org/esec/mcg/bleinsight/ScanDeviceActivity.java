@@ -5,20 +5,20 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import org.esec.mcg.bleinsight.adapter.DeviceListAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
 
-public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceUiCallbacks {
+public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallbacks {
     private static final long SCANNING_TIMEOUT = 20 * 1000;  /* 5 seconds */
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
@@ -38,9 +38,13 @@ public class ScanDeviceActivity extends AppCompatActivity implements ScanDeviceU
         deviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO show advertised info
                 LogUtils.d("点击的条目：" + position);
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);;
+        setActionBar(toolbar);
 
         mBLEWrapper = new BLEWrapper(this);
         mBLEWrapper.setScanDeviceUiCallbacks(this);
