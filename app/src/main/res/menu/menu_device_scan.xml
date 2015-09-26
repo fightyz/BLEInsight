@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".DeviceScanActivity">
     <item android:id="@+id/scanning_start" android:title="Scan" android:orderInCategory="2" app:showAsAction="always|withText"/>
     <item android:id="@+id/scanning_stop" android:title="Stop" android:orderInCategory="3" app:showAsAction="always|withText"/>
-    <item android:id="@+id/scanning_indicator" android:orderInCategory="4" app:showAsAction="ifRoom"/>
+    <!--<item android:id="@+id/scanning_indicator" android:title="Progress" android:orderInCategory="4" app:showAsAction="ifRoom"/>-->
 
 </menu>

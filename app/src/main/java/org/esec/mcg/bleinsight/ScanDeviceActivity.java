@@ -5,15 +5,20 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import org.esec.mcg.bleinsight.adapter.DeviceDetailAdapter;
 import org.esec.mcg.bleinsight.adapter.DeviceListAdapter;
+import org.esec.mcg.bleinsight.adapter.ScanDeviceAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
@@ -24,27 +29,51 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
 
     public BLEWrapper mBLEWrapper;
     public static boolean mScanning = false; /* actionBar上start&stop的开关 */
-    private ListView deviceListView;
-    private DeviceListAdapter mDeviceListAdapter;
+    private ScanDeviceAdapter mScanDeviceAdapter;
+    private RecyclerView mRecyclerView;
+    private Toolbar toolbar;
+    private Toolbar.OnMenuItemClickListener onMenuItemClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
 
-        deviceListView = (ListView) findViewById(R.id.device_list_view);
-        mDeviceListAdapter = new DeviceListAdapter(this);
-        deviceListView.setAdapter(mDeviceListAdapter);
-        deviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO show advertised info
-                LogUtils.d("点击的条目：" + position);
-            }
-        });
+        mScanDeviceAdapter = new ScanDeviceAdapter(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);;
+        mRecyclerView = (RecyclerView) findViewById(R.id.device_list_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mScanDeviceAdapter);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.scanning_start:
+                        startScanningInit();
+                        break;
+                    case R.id.scanning_stop:
+                        stopScanningInit();
+                        mBLEWrapper.stopScanning();
+                        break;
+                }
+
+                invalidateOptionsMenu();
+
+                return true;
+            }
+        };
+        toolbar.inflateMenu(R.menu.menu_device_scan);
         setActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
+//        toolbar.set
+//        toolbar.
 
         mBLEWrapper = new BLEWrapper(this);
         mBLEWrapper.setScanDeviceUiCallbacks(this);
@@ -88,11 +117,11 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         if (mScanning) {
             menu.findItem(R.id.scanning_start).setVisible(false);
             menu.findItem(R.id.scanning_stop).setVisible(true);
-            menu.findItem(R.id.scanning_indicator).setActionView(R.layout.progress_indicator);
+//            menu.findItem(R.id.scanning_indicator).setActionView(R.layout.progress_indicator);
         } else {
             menu.findItem(R.id.scanning_start).setVisible(true);
             menu.findItem(R.id.scanning_stop).setVisible(false);
-            menu.findItem(R.id.scanning_indicator).setActionView(null);
+//            menu.findItem(R.id.scanning_indicator).setActionView(null);
         }
         return true;
     }
@@ -134,9 +163,10 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
      * 开始扫描前的一些初始化工作
      */
     public void startScanningInit() {
+        toolbar.findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         DeviceListAdapter.startUpdateRssiThread = true;
         mScanning = true;
-        mDeviceListAdapter.clearList();
+        mScanDeviceAdapter.clearList();
         mBLEWrapper.startScanning(SCANNING_TIMEOUT);
     }
 
@@ -144,8 +174,9 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
      * 结束扫描后的一些初始化工作
      */
     public void stopScanningInit() {
+        toolbar.findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
         mScanning = false;
-        mDeviceListAdapter.updatePeriodicalyRssi(false);
+        mScanDeviceAdapter.updatePeriodicalyRssi(false);
     }
 
     private void BLEMissing() {
@@ -160,7 +191,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
 
     @Override
     public void uiDeviceFound(ScanResult scanResult) {
-        mDeviceListAdapter.addDevice(scanResult);
+        mScanDeviceAdapter.addDevice(scanResult);
     }
 
     @Override
