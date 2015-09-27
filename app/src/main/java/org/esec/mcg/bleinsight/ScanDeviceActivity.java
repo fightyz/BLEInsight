@@ -72,8 +72,6 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         toolbar.inflateMenu(R.menu.menu_device_scan);
         setActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
-//        toolbar.set
-//        toolbar.
 
         mBLEWrapper = new BLEWrapper(this);
         mBLEWrapper.setScanDeviceUiCallbacks(this);
@@ -126,27 +124,27 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.scanning_start:
-                startScanningInit();
-                break;
-            case R.id.scanning_stop:
-                stopScanningInit();
-                mBLEWrapper.stopScanning();
-                break;
-        }
-
-        invalidateOptionsMenu();
-
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.scanning_start:
+//                startScanningInit();
+//                break;
+//            case R.id.scanning_stop:
+//                stopScanningInit();
+//                mBLEWrapper.stopScanning();
+//                break;
+//        }
+//
+//        invalidateOptionsMenu();
+//
+//        return true;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

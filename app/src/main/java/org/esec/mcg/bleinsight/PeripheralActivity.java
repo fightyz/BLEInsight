@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import org.esec.mcg.bleinsight.adapter.DeviceDetailAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
@@ -65,6 +66,14 @@ public class PeripheralActivity extends Activity implements InsightDeviceUiCallb
         mDeviceAddressView.setText(mDeviceAddress);
         mDeviceRssiView.setText(mDeviceRSSI);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 //        deviceDetailElv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 //            @Override
 //            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
