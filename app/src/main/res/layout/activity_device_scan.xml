@@ -10,6 +10,15 @@
         android:layout_height="wrap_content"
         android:background="@color/toolbar_color">
 
+        <TextView
+            android:id="@+id/scan_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="STOP SCANNING"
+            android:textStyle="bold"
+            android:layout_marginRight="16dp"/>
+
         <ProgressBar
             android:id="@+id/toolbar_progress_bar"
             android:layout_width="32dp"

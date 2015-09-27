@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -31,8 +32,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     public static boolean mScanning = false; /* actionBar上start&stop的开关 */
     private ScanDeviceAdapter mScanDeviceAdapter;
     private RecyclerView mRecyclerView;
-    private Toolbar toolbar;
-    private Toolbar.OnMenuItemClickListener onMenuItemClickListener;
+    private TextView scanToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,30 +48,20 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mScanDeviceAdapter);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("BLEInsight");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        scanToggle = (TextView) findViewById(R.id.scan_toggle);
+        scanToggle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-
-                switch (id) {
-                    case R.id.scanning_start:
-                        startScanningInit();
-                        break;
-                    case R.id.scanning_stop:
-                        stopScanningInit();
-                        mBLEWrapper.stopScanning();
-                        break;
+            public void onClick(View v) {
+                if (scanToggle.getText().equals("SCAN")) {
+                    startScanningInit();
+                } else if (scanToggle.getText().equals("STOP SCANNING")) {
+                    stopScanningInit();
                 }
-
-                invalidateOptionsMenu();
-
-                return true;
             }
-        };
-        toolbar.inflateMenu(R.menu.menu_device_scan);
-        setActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
+        });
 
         mBLEWrapper = new BLEWrapper(this);
         mBLEWrapper.setScanDeviceUiCallbacks(this);
@@ -94,7 +84,6 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
             finish();
         }
 
-
         startScanningInit();
         invalidateOptionsMenu();
     }
@@ -106,45 +95,6 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         mBLEWrapper.stopScanning();
         invalidateOptionsMenu();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_device_scan, menu);
-
-        if (mScanning) {
-            menu.findItem(R.id.scanning_start).setVisible(false);
-            menu.findItem(R.id.scanning_stop).setVisible(true);
-//            menu.findItem(R.id.scanning_indicator).setActionView(R.layout.progress_indicator);
-        } else {
-            menu.findItem(R.id.scanning_start).setVisible(true);
-            menu.findItem(R.id.scanning_stop).setVisible(false);
-//            menu.findItem(R.id.scanning_indicator).setActionView(null);
-        }
-        return true;
-    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        switch (id) {
-//            case R.id.scanning_start:
-//                startScanningInit();
-//                break;
-//            case R.id.scanning_stop:
-//                stopScanningInit();
-//                mBLEWrapper.stopScanning();
-//                break;
-//        }
-//
-//        invalidateOptionsMenu();
-//
-//        return true;
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -161,7 +111,8 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
      * 开始扫描前的一些初始化工作
      */
     public void startScanningInit() {
-        toolbar.findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
+        scanToggle.setText("STOP SCANNING");
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         DeviceListAdapter.startUpdateRssiThread = true;
         mScanning = true;
         mScanDeviceAdapter.clearList();
@@ -172,7 +123,8 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
      * 结束扫描后的一些初始化工作
      */
     public void stopScanningInit() {
-        toolbar.findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
+        scanToggle.setText("SCAN");
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
         mScanning = false;
         mScanDeviceAdapter.updatePeriodicalyRssi(false);
     }
