@@ -5,10 +5,20 @@
 
     <Toolbar
         android:id="@+id/peripheral_toolbar"
-        style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_color" />
+        android:background="@color/toolbar_color">
+
+        <TextView
+            android:id="@+id/connect_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DISCONNECT"
+            android:textStyle="bold"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"/>
+
+    </Toolbar>
 
     <TableLayout
         android:id="@+id/peripheral_header"

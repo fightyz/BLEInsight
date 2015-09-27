@@ -67,6 +67,8 @@ public class PeripheralActivity extends Activity implements InsightDeviceUiCallb
         mDeviceRssiView.setText(mDeviceRSSI);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
+        toolbar.setTitle(mDeviceName);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,16 +76,19 @@ public class PeripheralActivity extends Activity implements InsightDeviceUiCallb
                 finish();
             }
         });
-//        deviceDetailElv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//                LogUtils.d("点击了service");
-//                BluetoothGattService service = (BluetoothGattService) mDeviceDetailAdapter.getGroup(groupPosition);
-//                mBLEWrapper.getCharacteristicsForService(service);
-//                return true;
-//            }
-//        });
 
+        final TextView connectToggle = (TextView) findViewById(R.id.connect_toggle);
+        connectToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tv = (TextView)v;
+                if (tv.getText().equals("DISCONNECT")) {
+                    // TODO 将界面中所有字体设置为灰色
+                } else if (tv.getText().equals("CONNECT")) {
+                    // TODO: 9/27/15 显示菊花进度条并连接
+                }
+            }
+        });
     }
 
     @Override
@@ -117,29 +122,6 @@ public class PeripheralActivity extends Activity implements InsightDeviceUiCallb
         mBLEWrapper.stopMonitoringRssiValue();
         mBLEWrapper.disconnect();
         mBLEWrapper.close();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_peripheral, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
