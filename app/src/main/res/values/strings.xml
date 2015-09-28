@@ -4,4 +4,36 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_peripheral">PeripheralActivity</string>
+    <string name="title_activity_peripheral_detail">PeripheralDetailActivity</string>
+
+    <!-- Linear sample -->
+    <string name="activity_vertical_linear_sample_title">Vertical Linear Sample</string>
+    <string name="activity_horizontal_linear_sample_title">Horizontal Linear Sample</string>
+    <string name="toolbar_sample_checkBox">Custom Expand Button</string>
+    <string name="child_text">Child %1$d</string>
+    <string name="second_child_text">Child %1$d_2</string>
+    <string name="third_child_text">Child %1$d_3</string>
+    <string name="child_insert_text">Child of inserted #%1$d</string>
+    <string name="parent_text">Parent %1$d</string>
+    <string name="inserted_parent_text">Inserted Parent</string>
+    <string name="arrow_contentDescription">Expand list item arrow</string>
+    <string name="item_expanded">Item %1$d expanded</string>
+    <string name="item_collapsed">Item %1$d collapsed</string>
+    <string name="expand_parent_two">Expand parent 2</string>
+    <string name="collapse_parent_two">Collapse parent 2</string>
+    <string name="expand_all">Expand all parents</string>
+    <string name="collapse_all">Collapse all parents</string>
+    <string name="add_item_to_end">Add parent to end</string>
+    <string name="remove_item_from_end">Remove parent from end</string>
+    <string name="add_item_at_pos_two">Add parent @ pos 1</string>
+    <string name="remove_second_pos">Remove parent @ pos 1</string>
+    <string name="add_child">Add child to end of 2nd parent</string>
+    <string name="remove_child">Remove child on 2nd parent from pos 1</string>
+    <string name="added_child">Child Addition %1$d</string>
+    <string name="add_multiple_parents">Add 2 Parents @ pos 1</string>
+
+    <!-- Sample Toolbar -->
+    <string name="no_animation">No animation</string>
+    <string name="spinner_adapter_time_s">1 s</string>
+    <string name="spinner_adapter_time_ms">%1$d ms</string>
 </resources>

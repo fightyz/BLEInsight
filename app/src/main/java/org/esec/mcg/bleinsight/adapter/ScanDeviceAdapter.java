@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.PeripheralActivity;
+import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
 
@@ -162,7 +163,8 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
                     mParent.mBLEWrapper.stopScanning();
                 }
 
-                mParent.startActivity(intent);
+//                mParent.startActivity(intent);
+                mParent.startActivity(new Intent(mParent, PeripheralDetailActivity.class));
             }
         });
     }
