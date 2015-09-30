@@ -153,18 +153,28 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
         holder.connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(mParent, PeripheralActivity.class);
-                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_NAME, name);
-                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_ADDRESS, address);
-                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_RSSI, rssiString);
-                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_BOND, bondStateString);
+//                final Intent intent = new Intent(mParent, PeripheralActivity.class);
+//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_NAME, name);
+//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_ADDRESS, address);
+//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_RSSI, rssiString);
+//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_BOND, bondStateString);
+//
+//                if (ScanDeviceActivity.mScanning) {
+//                    mParent.mBLEWrapper.stopScanning();
+//                }
+//
+//                mParent.startActivity(intent);
+                final Intent intent = new Intent(mParent, PeripheralDetailActivity.class);
+                intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_NAME, name);
+                intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_ADDRESS, address);
+                intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_RSSI, rssiString);
+                intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_BOND, bondStateString);
 
                 if (ScanDeviceActivity.mScanning) {
                     mParent.mBLEWrapper.stopScanning();
                 }
 
-//                mParent.startActivity(intent);
-                mParent.startActivity(new Intent(mParent, PeripheralDetailActivity.class));
+                mParent.startActivity(intent);
             }
         });
     }

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.R;
+import org.esec.mcg.bleinsight.ServiceItemBean;
 
 /**
  * Created by yz on 2015/9/28.
@@ -17,21 +18,24 @@ public class ServiceViewHolder extends ParentViewHolder {
     private static final float PIVOT_VALUE = 0.5f;
     private static final long DEFAULT_ROTATE_DURATION_MS = 200;
 
-    public TextView mNumberTextView;
-    public TextView mDataTextView;
+    public TextView mServiceNameTextView;
+    public TextView mServiceUuidTextView;
+    public TextView mServiceTypeTextView;
     public ImageView mArrowExpandImageView;
 
     public ServiceViewHolder(View itemView) {
         super(itemView);
 
-        mNumberTextView = (TextView) itemView.findViewById(R.id.list_item_parent_vertical_number_textView);
-        mDataTextView = (TextView) itemView.findViewById(R.id.list_item_parent_vertical_parent_textView);
+        mServiceNameTextView = (TextView) itemView.findViewById(R.id.service_name);
+        mServiceUuidTextView = (TextView) itemView.findViewById(R.id.service_uuid);
+        mServiceTypeTextView = (TextView) itemView.findViewById(R.id.service_type);
         mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
     }
 
-    public void bind(int parentNumber, String parentText) {
-        mNumberTextView.setText(String.valueOf(parentNumber));
-        mDataTextView.setText(parentText);
+    public void bind(ServiceItemBean serviceItemBean) {
+        mServiceNameTextView.setText(serviceItemBean.getServiceName());
+        mServiceUuidTextView.setText(serviceItemBean.getServiceUuid());
+        mServiceTypeTextView.setText(serviceItemBean.getServiceType());
     }
 
     @Override

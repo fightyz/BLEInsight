@@ -3,7 +3,7 @@ package org.esec.mcg.bleinsight;
 /**
  * Created by yz on 2015/9/28.
  */
-public class CharacteristicItem {
+public class CharacteristicItemBean {
 
     private String mChildText;
 

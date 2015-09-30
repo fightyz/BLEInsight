@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/service_list_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_parent_vertical_height"
-    android:layout_marginLeft="@dimen/margin_medium"
-    android:layout_marginRight="@dimen/margin_medium"
-    android:layout_marginTop="@dimen/margin_medium"
-    android:background="@drawable/background_list_item_parent"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background_sqr_white"
+    >
 
     <TextView
-        android:id="@+id/list_item_parent_vertical_number_textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/service_name"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/list_item_parent_vertical_number_textView_marginLeft"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_gravity="center_vertical"
-        android:textSize="@dimen/text_size_header"/>
+        android:layout_below="@+id/peripheral_toolbar"
+        android:paddingLeft="20dp"
+        android:paddingTop="2dp"
+        android:text="service name"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/list_item_parent_vertical_parent_textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/service_uuid"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/list_item_parent_vertical_parent_textView_marginLeft"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_gravity="center_vertical"
-        android:textSize="@dimen/text_size_header"/>
+        android:layout_below="@+id/service_name"
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="SERVICE UUID"
+        android:textSize="13sp"/>
+
+    <TextView
+        android:id="@+id/service_type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/service_uuid"
+
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:text="PRIMARY SERVICE"
+        android:textSize="15sp"/>
 
     <ImageView
         android:id="@+id/list_item_parent_horizontal_arrow_imageView"
@@ -42,4 +50,4 @@
         android:src="@drawable/selector_arrow_down"
         android:contentDescription="@string/arrow_contentDescription"/>
 
-</LinearLayout>
+</RelativeLayout>

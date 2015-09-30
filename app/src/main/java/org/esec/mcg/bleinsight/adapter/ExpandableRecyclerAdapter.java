@@ -36,11 +36,20 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         void onListItemCollapse(int position);
     }
 
-    public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+    public ExpandableRecyclerAdapter() {
         super();
-        mParentItemList = parentItemList;
+//        mParentItemList = parentItemList;
+//        mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
+//        mAttachedRecyclerViewPool = new ArrayList<>();
+        mItemList = new ArrayList<>();
+    }
+
+    public void setParentItemList(List<? extends ParentListItem> parentItemList) {
+        this.mParentItemList = parentItemList;
         mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
-        mAttachedRecyclerViewPool = new ArrayList<>();
+//        mItemList = new ArrayList<>();
+//        mAttachedRecyclerViewPool = new ArrayList<>();
+
     }
 
     /**
