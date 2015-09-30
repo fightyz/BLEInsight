@@ -59,7 +59,6 @@ public class PeripheralDetailActivity extends Activity
 
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        LogUtils.d(mDeviceName);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
         mDeviceNameView.setText(mDeviceName);
@@ -196,13 +195,18 @@ public class PeripheralDetailActivity extends Activity
     }
 
     @Override
-    public void uiAvailableServices(BluetoothGatt gatt, BluetoothDevice device, List<BluetoothGattService> services) {
-        for (BluetoothGattService service : services) {
-            mPeripheralDetailAdapter.addService(service);
-        }
+    public void uiAvailableServices(BluetoothGatt gatt, BluetoothDevice device, final List<BluetoothGattService> services) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (BluetoothGattService service : services) {
+                    mPeripheralDetailAdapter.addService(service);
+                }
 
-        mPeripheralDetailAdapter.setParentItemList();
-        mPeripheralDetailAdapter.notifyDataSetChanged();
+                mPeripheralDetailAdapter.setParentItemList();
+                mPeripheralDetailAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
