@@ -119,34 +119,34 @@ public class PeripheralDetailActivity extends Activity
         mBLEWrapper.connect(mDeviceAddress);
     }
 
-    private List<ServiceItemBean> setUpTestData(int numItems) {
-        List<ServiceItemBean> serviceParentList = new ArrayList<>();
-
-        for (int i = 0; i < numItems; i++) {
-            List<CharacteristicItemBean> childItemList = new ArrayList<>();
-
-            CharacteristicItemBean characteristicItemBean = new CharacteristicItemBean();
-            characteristicItemBean.setChildText(getString(R.string.child_text, i));
-            childItemList.add(characteristicItemBean);
-
-            if (i % 2 == 0) {
-                CharacteristicItemBean characteristicItemBean1 = new CharacteristicItemBean();
-                characteristicItemBean1.setChildText(getString(R.string.second_child_text, i));
-                childItemList.add(characteristicItemBean);
-            }
-
-            ServiceItemBean serviceItemBean = new ServiceItemBean();
-            serviceItemBean.setChildItemList(childItemList);
-//            serviceItemBean.setParentNumber(i);
-//            serviceItemBean.setParentText(getString(R.string.parent_text, i));
-            if (i == 0) {
-                serviceItemBean.setInitiallyExpanded(true);
-            }
-            serviceParentList.add(serviceItemBean);
-        }
-
-        return serviceParentList;
-    }
+//    private List<ServiceItemBean> setUpTestData(int numItems) {
+//        List<ServiceItemBean> serviceParentList = new ArrayList<>();
+//
+//        for (int i = 0; i < numItems; i++) {
+//            List<CharacteristicItemBean> childItemList = new ArrayList<>();
+//
+//            CharacteristicItemBean characteristicItemBean = new CharacteristicItemBean();
+//            characteristicItemBean.setChildText(getString(R.string.child_text, i));
+//            childItemList.add(characteristicItemBean);
+//
+//            if (i % 2 == 0) {
+//                CharacteristicItemBean characteristicItemBean1 = new CharacteristicItemBean();
+//                characteristicItemBean1.setChildText(getString(R.string.second_child_text, i));
+//                childItemList.add(characteristicItemBean);
+//            }
+//
+//            ServiceItemBean serviceItemBean = new ServiceItemBean();
+//            serviceItemBean.setChildItemList(childItemList);
+////            serviceItemBean.setParentNumber(i);
+////            serviceItemBean.setParentText(getString(R.string.parent_text, i));
+//            if (i == 0) {
+//                serviceItemBean.setInitiallyExpanded(true);
+//            }
+//            serviceParentList.add(serviceItemBean);
+//        }
+//
+//        return serviceParentList;
+//    }
 
     @Override
     public void onListItemExpanded(int position) {

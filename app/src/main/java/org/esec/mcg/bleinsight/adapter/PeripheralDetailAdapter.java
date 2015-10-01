@@ -26,8 +26,8 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 
     private ArrayList<BluetoothGattService> mBTService;
     private ArrayList<List<BluetoothGattCharacteristic>> mCharacteristics;
-    private List<ServiceItemBean> serviceParentList;
-    private List<CharacteristicItemBean> characteristicChildList;
+    private List<ServiceItemBean> serviceParentList; // 用于recyclerView的显示
+//    private List<CharacteristicItemBean> characteristicChildList; // 用于recyclerView的显示
     private LayoutInflater mInflater;
 
     public PeripheralDetailAdapter(Context context) {
@@ -35,21 +35,60 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         mBTService = new ArrayList<>();
         mCharacteristics = new ArrayList<>();
         serviceParentList = new ArrayList<>();
-        characteristicChildList = new ArrayList<>();
+//        characteristicChildList = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * 添加service和characteristic列表
+     * @param service
+     */
     public void addService(BluetoothGattService service) {
+        List<CharacteristicItemBean> characteristicChildList = new ArrayList<>();
         if (mBTService.contains(service) == false) {
             mBTService.add(service);
             List<BluetoothGattCharacteristic> chars = service.getCharacteristics();
             if (chars != null) {
                 mCharacteristics.add(chars);
+                for (BluetoothGattCharacteristic characteristic : chars) {
+                    String charUuid = characteristic.getUuid().toString().toLowerCase(Locale.getDefault());
+                    String charName = BLENameResolver.resolveCharacteristicName(charUuid);
+                    int properties = characteristic.getProperties();
+                    StringBuilder propertiesString = new StringBuilder();
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_BROADCAST) != 0)
+                        propertiesString.append("BROADCAST, ");
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS) != 0)
+                        propertiesString.append("EXTENDED_PROPS, ");
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                        propertiesString.append("INDICATE, ");
+                    }
+
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                        propertiesString.append("NOTIFY, ");
+                    }
+
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
+                        propertiesString.append("READ, ");
+                    }
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_SIGNED_WRITE) != 0)
+                        propertiesString.append("SIGNED WRITE, ");
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) {
+                        propertiesString.append("WRITE, ");
+                    }
+                    if ((properties & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0)
+                        propertiesString.append("WRITE NO RESPONSE, ");
+
+                    CharacteristicItemBean characteristicItemBean = new CharacteristicItemBean();
+                    characteristicItemBean.setCharacteristicName(charName);
+                    characteristicItemBean.setCharacteristicUuid(charUuid);
+                    characteristicItemBean.setCharacteristicPropertires(propertiesString.substring(0, propertiesString.length() - 2));
+                    characteristicChildList.add(characteristicItemBean);
+                }
             }
 
             String uuid = service.getUuid().toString().toLowerCase(Locale.getDefault());
             String name = BLENameResolver.resolveServiceName(uuid);
-            String type = (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY) ? "Primary" : "Secondary";
+            String type = (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY) ? "Primary Service" : "Secondary Service";
 
             ServiceItemBean serviceItemBean = new ServiceItemBean();
             serviceItemBean.setServiceName(name);
@@ -86,6 +125,6 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     @Override
     public void onBindChildViewHolder(CharacteristicViewHolder childViewHolder, int position, Object childListItem) {
         CharacteristicItemBean childItem = (CharacteristicItemBean) childListItem;
-        childViewHolder.bind(childItem.getChildText());
+        childViewHolder.bind(childItem);
     }
 }
