@@ -19,35 +19,43 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/uuid_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UUID: "
+        android:textColor="#BDBDBD"
+        android:layout_below="@+id/service_name"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"/>
+
+    <TextView
         android:id="@+id/service_uuid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/service_name"
-
-        android:paddingBottom="5dp"
-        android:paddingLeft="20dp"
+        android:layout_toRightOf="@+id/uuid_tv"
         android:paddingRight="20dp"
-        android:text="SERVICE UUID"
-        android:textSize="13sp"/>
+        android:paddingTop="5dp"
+        android:text="SERVICE UUID"/>
 
     <TextView
         android:id="@+id/service_type"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/service_uuid"
-
+        android:paddingTop="2dp"
         android:paddingBottom="5dp"
         android:paddingLeft="20dp"
-        android:text="PRIMARY SERVICE"
-        android:textSize="15sp"/>
+        android:textColor="#BDBDBD"
+        android:text="PRIMARY SERVICE"/>
 
-    <ImageView
-        android:id="@+id/list_item_parent_horizontal_arrow_imageView"
-        android:layout_width="@dimen/list_item_parent_arrow_size"
-        android:layout_height="@dimen/list_item_parent_arrow_size"
-        android:layout_marginRight="@dimen/margin_medium"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/selector_arrow_down"
-        android:contentDescription="@string/arrow_contentDescription"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/list_item_parent_horizontal_arrow_imageView"-->
+        <!--android:layout_width="@dimen/list_item_parent_arrow_size"-->
+        <!--android:layout_height="@dimen/list_item_parent_arrow_size"-->
+        <!--android:layout_marginRight="@dimen/margin_medium"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:src="@drawable/selector_arrow_down"-->
+        <!--android:contentDescription="@string/arrow_contentDescription"/>-->
 
 </RelativeLayout>

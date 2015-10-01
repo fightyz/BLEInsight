@@ -88,7 +88,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 
             String uuid = service.getUuid().toString().toLowerCase(Locale.getDefault());
             String name = BLENameResolver.resolveServiceName(uuid);
-            String type = (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY) ? "Primary Service" : "Secondary Service";
+            String type = (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY) ? "PRIMARY SERVICE" : "SECONDARY SERVICE";
 
             ServiceItemBean serviceItemBean = new ServiceItemBean();
             serviceItemBean.setServiceName(name);

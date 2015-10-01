@@ -21,7 +21,7 @@ public class ServiceViewHolder extends ParentViewHolder {
     public TextView mServiceNameTextView;
     public TextView mServiceUuidTextView;
     public TextView mServiceTypeTextView;
-    public ImageView mArrowExpandImageView;
+//    public ImageView mArrowExpandImageView;
 
     public ServiceViewHolder(View itemView) {
         super(itemView);
@@ -29,7 +29,7 @@ public class ServiceViewHolder extends ParentViewHolder {
         mServiceNameTextView = (TextView) itemView.findViewById(R.id.service_name);
         mServiceUuidTextView = (TextView) itemView.findViewById(R.id.service_uuid);
         mServiceTypeTextView = (TextView) itemView.findViewById(R.id.service_type);
-        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
+//        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
     }
 
     public void bind(ServiceItemBean serviceItemBean) {
@@ -38,27 +38,27 @@ public class ServiceViewHolder extends ParentViewHolder {
         mServiceTypeTextView.setText(serviceItemBean.getServiceType());
     }
 
-    @Override
-    public void setExpanded(boolean expanded) {
-        super.setExpanded(expanded);
-
-        if (expanded) {
-            mArrowExpandImageView.setRotation(ROTATED_POSITION);
-        } else {
-            mArrowExpandImageView.setRotation(INITIAL_POSITION);
-        }
-    }
-
-    @Override
-    public void onExpansionToggled(boolean expanded) {
-        super.onExpansionToggled(expanded);
-
-        RotateAnimation rotateAnimation = new RotateAnimation(ROTATED_POSITION,
-                INITIAL_POSITION,
-                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
-                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
-        rotateAnimation.setDuration(DEFAULT_ROTATE_DURATION_MS);
-        rotateAnimation.setFillAfter(true);
-        mArrowExpandImageView.startAnimation(rotateAnimation);
-    }
+//    @Override
+//    public void setExpanded(boolean expanded) {
+//        super.setExpanded(expanded);
+//
+//        if (expanded) {
+//            mArrowExpandImageView.setRotation(ROTATED_POSITION);
+//        } else {
+//            mArrowExpandImageView.setRotation(INITIAL_POSITION);
+//        }
+//    }
+//
+//    @Override
+//    public void onExpansionToggled(boolean expanded) {
+//        super.onExpansionToggled(expanded);
+//
+//        RotateAnimation rotateAnimation = new RotateAnimation(ROTATED_POSITION,
+//                INITIAL_POSITION,
+//                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+//                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+//        rotateAnimation.setDuration(DEFAULT_ROTATE_DURATION_MS);
+//        rotateAnimation.setFillAfter(true);
+//        mArrowExpandImageView.startAnimation(rotateAnimation);
+//    }
 }

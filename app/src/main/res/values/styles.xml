@@ -18,4 +18,6 @@
         <item name="android:background">@drawable/primary_round</item>
     </style>
 
+    <style name="MyButton" parent="android:Widget.Material.Button"></style>
+
 </resources>
