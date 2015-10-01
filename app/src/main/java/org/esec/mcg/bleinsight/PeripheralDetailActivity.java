@@ -8,12 +8,14 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import org.esec.mcg.bleinsight.adapter.ExpandableRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralDetailAdapter;
@@ -24,14 +26,13 @@ import org.esec.mcg.utils.logger.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PeripheralDetailActivity extends Activity
-        implements ExpandableRecyclerAdapter.ExpandCollapseListener, InsightDeviceUiCallbacks
-{
+public class PeripheralDetailActivity extends AppCompatActivity
+        implements ExpandableRecyclerAdapter.ExpandCollapseListener, InsightDeviceUiCallbacks {
 
-    public static final String EXTRAS_DEVICE_NAME       = "BLE_DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS    = "BLE_DEVICE_ADDRESS";
-    public static final String EXTRAS_DEVICE_RSSI       = "BLE_DEVICE_RSSI";
-    public static final String EXTRAS_DEVICE_BOND       = "BLE_DEVICE_BOND";
+    public static final String EXTRAS_DEVICE_NAME = "BLE_DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "BLE_DEVICE_ADDRESS";
+    public static final String EXTRAS_DEVICE_RSSI = "BLE_DEVICE_RSSI";
+    public static final String EXTRAS_DEVICE_BOND = "BLE_DEVICE_BOND";
 
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
@@ -43,12 +44,14 @@ public class PeripheralDetailActivity extends Activity
 
     private TextView mDeviceNameView;
     private TextView mDeviceAddressView;
-    private TextView mDeviceRssiView;
+//    private TextView mDeviceRssiView;
     private TextView mDeviceStatusView;
+    private Toolbar toolbar;
 
     private PeripheralDetailAdapter mPeripheralDetailAdapter;
 
     private RecyclerView mRecyclerView;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,17 @@ public class PeripheralDetailActivity extends Activity
         setContentView(R.layout.activity_peripheral_detail);
 
         connectViewsVariables();
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+        toolbar.setTitle("Nordic_HRM");
+        setSupportActionBar(toolbar);
+
+
+//        mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getCR.color.white);
 
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -63,24 +77,20 @@ public class PeripheralDetailActivity extends Activity
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
         mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
-        mDeviceRssiView.setText(mDeviceRSSI);
+//        mDeviceRssiView.setText(mDeviceRSSI);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
-        toolbar.setTitle(mDeviceName);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mCollapsingToolbarLayout.setTitle(mDeviceName);
+
+
+//        toolbar.setTitle(mDeviceName);
+//        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
 
         final TextView connectToggle = (TextView) findViewById(R.id.connect_toggle);
         connectToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView tv = (TextView)v;
+                TextView tv = (TextView) v;
                 if (tv.getText().equals("DISCONNECT")) {
                     // TODO 将界面中所有字体设置为灰色
                 } else if (tv.getText().equals("CONNECT")) {
@@ -113,7 +123,8 @@ public class PeripheralDetailActivity extends Activity
             finish();
         }
 
-        if (mPeripheralDetailAdapter == null) mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
+        if (mPeripheralDetailAdapter == null)
+            mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
 
         mDeviceStatusView.setText("connecting...");
         mBLEWrapper.connect(mDeviceAddress);
@@ -161,11 +172,13 @@ public class PeripheralDetailActivity extends Activity
     }
 
     private void connectViewsVariables() {
+        toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
         mDeviceNameView = (TextView) findViewById(R.id.peripheral_name);
         mDeviceAddressView = (TextView) findViewById(R.id.peripheral_address);
-        mDeviceRssiView = (TextView) findViewById(R.id.peripheral_rssi);
+//        mDeviceRssiView = (TextView) findViewById(R.id.peripheral_rssi);
         mDeviceStatusView = (TextView) findViewById(R.id.peripheral_status);
         mRecyclerView = (RecyclerView) findViewById(R.id.peripheral_detail_recycler_view);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
     }
 
     @Override
@@ -184,7 +197,8 @@ public class PeripheralDetailActivity extends Activity
             @Override
             public void run() {
                 mDeviceRSSI = rssi + "db";
-                mDeviceRssiView.setText(mDeviceRSSI);
+//                mDeviceRssiView.setText(mDeviceRSSI);
+//                mCollapsingToolbarLayout.setTitle("Nordic_HRM");
             }
         });
     }

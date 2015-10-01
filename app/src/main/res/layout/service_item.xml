@@ -4,14 +4,14 @@
     android:id="@+id/service_list_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_background_sqr_white"
-    >
+    android:layout_marginTop="8dp"
+    android:background="@drawable/background_list_item_parent">
+    <!--android:background="@drawable/card_background_sqr_white"-->
 
     <TextView
         android:id="@+id/service_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/peripheral_toolbar"
         android:paddingLeft="20dp"
         android:paddingTop="2dp"
         android:text="service name"

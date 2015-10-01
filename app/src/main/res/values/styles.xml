@@ -1,10 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:colorPrimaryDark">@color/status_bar_color</item>
-        <item name="android:colorPrimary">@color/toolbar_color</item>
-        <item name="android:colorButtonNormal">#2196f3</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/status_bar_color</item>
+        <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="colorButtonNormal">#2196f3</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAccent">@color/status_bar_color</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/background_material_light</item>
     </style>
 
     <style name="Button">

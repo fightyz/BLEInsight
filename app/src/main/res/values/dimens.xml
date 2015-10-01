@@ -23,4 +23,6 @@
     <dimen name="list_item_parent_vertical_parent_textView_marginLeft">42dp</dimen>
     <dimen name="list_item_child_background_corner_radius">4dp</dimen>
     <dimen name="list_item_parent_background_corner_radius">2dp</dimen>
+
+    <dimen name="expanded_toolbar_title_margin_start">64dp</dimen>
 </resources>

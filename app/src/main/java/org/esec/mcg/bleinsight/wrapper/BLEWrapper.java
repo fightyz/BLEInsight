@@ -66,7 +66,7 @@ public class BLEWrapper {
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
 
                 startServicesDiscovery();
-                startMonitoringRssiValue();
+//                startMonitoringRssiValue();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 mConnected = false;

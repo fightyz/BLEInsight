@@ -3,7 +3,7 @@
     <item>
         <shape>
             <solid android:color="@color/background_card"/>
-            <corners android:radius="@dimen/list_item_parent_background_corner_radius"/>
+            <corners android:radius="4dp"/>
         </shape>
     </item>
 </layer-list>
