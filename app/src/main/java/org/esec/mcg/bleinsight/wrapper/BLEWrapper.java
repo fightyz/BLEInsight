@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
+import org.esec.mcg.utils.ByteUtil;
 import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.List;
@@ -25,13 +26,14 @@ import java.util.Queue;
 /**
  * Created by yz on 2015/9/9.
  */
-public class BLEWrapper {
+public class BLEWrapper implements Cloneable {
     private static final long SCANNING_TIMEOUT = 5 * 1000;
     private static final int RSSI_UPDATE_TIME_INTERVAL = 1500; // 1.5 seconds
 
     private Context mContext;
     private ScanDeviceUiCallbacks mScanDeviceUiCallbacks;
     private InsightDeviceUiCallbacks mInsightDevcieUiCallbacks;
+    private CommandUiCallbacks mCommandUiCallbacks;
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBluetoothLeScanner;
@@ -47,6 +49,8 @@ public class BLEWrapper {
 
     private Handler mTimerHandler = new Handler();
     private boolean mTimerEnabled = false;
+
+    public BLEWrapper self;
 
     public List<BluetoothGattService> getCachedServices() {return mBluetoothGattServices;}
 
@@ -87,10 +91,18 @@ public class BLEWrapper {
                 getSupportedServices();
             }
         }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                getCharacteristicValue(characteristic);
+            }
+        }
     };
 
     public BLEWrapper(Context context) {
         this.mContext = context;
+        self = this;
     }
 
     /**
@@ -107,6 +119,18 @@ public class BLEWrapper {
      */
     public void setInsightDeviceUiCallbacks(InsightDeviceUiCallbacks insightDeviceUiCallbacks) {
         this.mInsightDevcieUiCallbacks = insightDeviceUiCallbacks;
+    }
+
+    /**
+     * 对characteristic进行操作时的那些命令的回调
+     * @param commandUiCallbacks
+     */
+    public void setCommandUiCallbacks(CommandUiCallbacks commandUiCallbacks) {
+        LogUtils.d(commandUiCallbacks);
+        if (commandUiCallbacks == null ) {
+            LogUtils.d("commandUiCallbacks is null");
+        }
+        this.mCommandUiCallbacks = commandUiCallbacks;
     }
 
     /**
@@ -290,5 +314,39 @@ public class BLEWrapper {
         chars = service.getCharacteristics();
         mInsightDevcieUiCallbacks.uiCharacteristicsForService(mBluetoothGatt, mBluetoothDevice, service, chars);
         mBluetoothSelectedService = service;
+    }
+
+    public void requestCharacteristicValue(BluetoothGattCharacteristic characteristic) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) return;
+
+        mBluetoothGatt.readCharacteristic(characteristic);
+    }
+
+    public void getCharacteristicValue(BluetoothGattCharacteristic characteristic) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null || characteristic == null) return;
+
+        String strValue = null;
+        byte[] rawValue = characteristic.getValue();
+
+        if (rawValue.length > 0) {
+            strValue = ByteUtil.ByteArrayToHexString(rawValue);
+        }
+        if (mCommandUiCallbacks == null) {
+            LogUtils.d("mCommandUiCallbacks is null");
+            LogUtils.d(this);
+            Log.d("yz",this.toString());
+        }
+        self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice, mBluetoothSelectedService, characteristic, strValue);
+    }
+
+    @Override
+    public Object clone() {
+        BLEWrapper mBLEWrapper = null;
+        try {
+            mBLEWrapper = (BLEWrapper)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return mBLEWrapper;
     }
 }

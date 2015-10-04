@@ -1,5 +1,7 @@
 package org.esec.mcg.bleinsight;
 
+import android.bluetooth.BluetoothGattCharacteristic;
+
 /**
  * Created by yz on 2015/9/28.
  */
@@ -9,6 +11,7 @@ public class CharacteristicItemBean {
     private String characteristicName;
     private String characteristicUuid;
     private String characteristicPropertires;
+    private BluetoothGattCharacteristic characteristic;
 
     public boolean getSwitchState() { return switchState; }
     public void setSwitchState(boolean switchState) {
@@ -28,5 +31,10 @@ public class CharacteristicItemBean {
     public String getCharacteristicPropertires() { return characteristicPropertires; }
     public void setCharacteristicPropertires(String characteristicPropertires) {
         this.characteristicPropertires = characteristicPropertires;
+    }
+
+    public BluetoothGattCharacteristic getCharacteristic() { return characteristic; }
+    public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
+        this.characteristic = characteristic;
     }
 }

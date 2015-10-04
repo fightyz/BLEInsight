@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/service_list_item_layout"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="110dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:layout_marginTop="8dp"
-    android:background="@drawable/background_list_item_parent">
-    <!--android:background="@drawable/card_background_sqr_white"-->
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    app:cardPreventCornerOverlap="false"
+    app:contentPadding="0dp"
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/service_name"
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:id="@+id/service_list_item_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingTop="2dp"
-        android:text="service name"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:layout_gravity="center_vertical">
+        <!--android:background="@drawable/card_background_sqr_white"-->
 
-    <TextView
-        android:id="@+id/uuid_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UUID: "
-        android:textColor="#BDBDBD"
-        android:layout_below="@+id/service_name"
-        android:paddingLeft="20dp"
-        android:paddingTop="5dp"/>
+        <TextView
+            android:id="@+id/service_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp"
+            android:text="service name"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/service_uuid"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/service_name"
-        android:layout_toRightOf="@+id/uuid_tv"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:text="SERVICE UUID"/>
+        <TextView
+            android:id="@+id/uuid_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UUID: "
+            android:textColor="#BDBDBD"
+            android:layout_below="@+id/service_name"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"/>
 
-    <TextView
-        android:id="@+id/service_type"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/service_uuid"
-        android:paddingTop="2dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="20dp"
-        android:textColor="#BDBDBD"
-        android:text="PRIMARY SERVICE"/>
+        <TextView
+            android:id="@+id/service_uuid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service_name"
+            android:layout_toRightOf="@+id/uuid_tv"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:text="SERVICE UUID"/>
 
-    <!--<ImageView-->
+        <TextView
+            android:id="@+id/service_type"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service_uuid"
+            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:textColor="#BDBDBD"
+            android:text="PRIMARY SERVICE"/>
+
+        <!--<ImageView-->
         <!--android:id="@+id/list_item_parent_horizontal_arrow_imageView"-->
         <!--android:layout_width="@dimen/list_item_parent_arrow_size"-->
         <!--android:layout_height="@dimen/list_item_parent_arrow_size"-->
@@ -58,4 +71,6 @@
         <!--android:src="@drawable/selector_arrow_down"-->
         <!--android:contentDescription="@string/arrow_contentDescription"/>-->
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

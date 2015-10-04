@@ -98,6 +98,9 @@ public class PeripheralDetailActivity extends AppCompatActivity
             }
         });
 
+        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(this);
+        mBLEWrapper.setInsightDeviceUiCallbacks(this);
+
         mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
 
         mPeripheralDetailAdapter.setExpandCollapseListener(this);
@@ -110,8 +113,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(this);
-        mBLEWrapper.setInsightDeviceUiCallbacks(this);
 
         if (mBLEWrapper.isBtEnabled() == false) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -128,35 +129,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mDeviceStatusView.setText("connecting...");
         mBLEWrapper.connect(mDeviceAddress);
     }
-
-//    private List<ServiceItemBean> setUpTestData(int numItems) {
-//        List<ServiceItemBean> serviceParentList = new ArrayList<>();
-//
-//        for (int i = 0; i < numItems; i++) {
-//            List<CharacteristicItemBean> childItemList = new ArrayList<>();
-//
-//            CharacteristicItemBean characteristicItemBean = new CharacteristicItemBean();
-//            characteristicItemBean.setChildText(getString(R.string.child_text, i));
-//            childItemList.add(characteristicItemBean);
-//
-//            if (i % 2 == 0) {
-//                CharacteristicItemBean characteristicItemBean1 = new CharacteristicItemBean();
-//                characteristicItemBean1.setChildText(getString(R.string.second_child_text, i));
-//                childItemList.add(characteristicItemBean);
-//            }
-//
-//            ServiceItemBean serviceItemBean = new ServiceItemBean();
-//            serviceItemBean.setChildItemList(childItemList);
-////            serviceItemBean.setParentNumber(i);
-////            serviceItemBean.setParentText(getString(R.string.parent_text, i));
-//            if (i == 0) {
-//                serviceItemBean.setInitiallyExpanded(true);
-//            }
-//            serviceParentList.add(serviceItemBean);
-//        }
-//
-//        return serviceParentList;
-//    }
 
     @Override
     public void onListItemExpanded(int position) {
@@ -179,6 +151,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mRecyclerView = (RecyclerView) findViewById(R.id.peripheral_detail_recycler_view);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
     }
+
+    public BLEWrapper getBLEWrapper() { return mBLEWrapper; }
 
     @Override
     public void uiDeviceConnected(BluetoothGatt gatt, BluetoothDevice device) {

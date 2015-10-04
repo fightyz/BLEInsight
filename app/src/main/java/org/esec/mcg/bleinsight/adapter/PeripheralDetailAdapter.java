@@ -14,6 +14,7 @@ import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.viewholder.CharacteristicViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ServiceViewHolder;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
+import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +29,19 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     private ArrayList<BluetoothGattService> mBTService;
     private ArrayList<List<BluetoothGattCharacteristic>> mCharacteristics;
     private List<ServiceItemBean> serviceParentList; // 用于recyclerView的显示
-//    private List<CharacteristicItemBean> characteristicChildList; // 用于recyclerView的显示
-    private HashMap<Integer, Boolean> switchStates;
     private LayoutInflater mInflater;
+    private Context mContext;
+
+//    private BLEWrapper mBLEWrapper;
 
     public PeripheralDetailAdapter(Context context) {
         super();
         mBTService = new ArrayList<>();
         mCharacteristics = new ArrayList<>();
         serviceParentList = new ArrayList<>();
-//        characteristicChildList = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
+        mContext = context;
+//        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(context);
     }
 
     /**
@@ -86,6 +89,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
                     characteristicItemBean.setCharacteristicUuid(charUuid);
                     characteristicItemBean.setCharacteristicPropertires(propertiesString.substring(0, propertiesString.length() - 2));
                     characteristicItemBean.setSwitchState(false);
+                    characteristicItemBean.setCharacteristic(characteristic);
                     characteristicChildList.add(characteristicItemBean);
                 }
             }
