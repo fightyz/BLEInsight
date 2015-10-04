@@ -65,7 +65,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
 //                finish();
 //            }
 //        });
-        toolbar.setTitle("Nordic_HRM");
         setSupportActionBar(toolbar);
 
 
@@ -75,7 +74,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
-        mDeviceNameView.setText(mDeviceName);
+//        mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
 //        mDeviceRssiView.setText(mDeviceRSSI);
 
@@ -173,7 +172,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private void connectViewsVariables() {
         toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
-        mDeviceNameView = (TextView) findViewById(R.id.peripheral_name);
+//        mDeviceNameView = (TextView) findViewById(R.id.peripheral_name);
         mDeviceAddressView = (TextView) findViewById(R.id.peripheral_address);
 //        mDeviceRssiView = (TextView) findViewById(R.id.peripheral_rssi);
         mDeviceStatusView = (TextView) findViewById(R.id.peripheral_status);
@@ -198,7 +197,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
             public void run() {
                 mDeviceRSSI = rssi + "db";
 //                mDeviceRssiView.setText(mDeviceRSSI);
-//                mCollapsingToolbarLayout.setTitle("Nordic_HRM");
+                mCollapsingToolbarLayout.setTitle(mDeviceName + mDeviceRSSI);
             }
         });
     }

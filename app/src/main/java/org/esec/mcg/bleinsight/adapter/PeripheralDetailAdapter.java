@@ -16,6 +16,7 @@ import org.esec.mcg.bleinsight.viewholder.ServiceViewHolder;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,6 +29,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     private ArrayList<List<BluetoothGattCharacteristic>> mCharacteristics;
     private List<ServiceItemBean> serviceParentList; // 用于recyclerView的显示
 //    private List<CharacteristicItemBean> characteristicChildList; // 用于recyclerView的显示
+    private HashMap<Integer, Boolean> switchStates;
     private LayoutInflater mInflater;
 
     public PeripheralDetailAdapter(Context context) {
@@ -44,6 +46,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
      * @param service
      */
     public void addService(BluetoothGattService service) {
+        int characteristicId = 0;
         List<CharacteristicItemBean> characteristicChildList = new ArrayList<>();
         if (mBTService.contains(service) == false) {
             mBTService.add(service);
@@ -82,6 +85,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
                     characteristicItemBean.setCharacteristicName(charName);
                     characteristicItemBean.setCharacteristicUuid(charUuid);
                     characteristicItemBean.setCharacteristicPropertires(propertiesString.substring(0, propertiesString.length() - 2));
+                    characteristicItemBean.setSwitchState(false);
                     characteristicChildList.add(characteristicItemBean);
                 }
             }
@@ -115,6 +119,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         View view = mInflater.inflate(R.layout.characteristic_item, childViewGroup, false);
         return new CharacteristicViewHolder(view);
     }
+
 
     @Override
     public void onBindParentViewHolder(ServiceViewHolder parentViewHolder, int position, ParentListItem parentListItem) {

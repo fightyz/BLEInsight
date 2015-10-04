@@ -8,6 +8,7 @@ import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.model.ParentWrapper;
 import org.esec.mcg.bleinsight.viewholder.ChildViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ParentViewHolder;
+import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        LogUtils.d("viewType = " + (viewType == 0 ? "PARENT" : "CHILD"));
         if (viewType == TYPE_PARENT) {
             PVH pvh = onCreateParentViewHolder(viewGroup);
             pvh.setParentListItemExpandCollapseListener(this);
@@ -78,6 +80,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        LogUtils.d("position = " + position);
         Object listItem = getListItem(position);
 
         if (listItem instanceof ParentWrapper) { //如果是父节点
@@ -177,9 +180,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             List<?> childItemList = parentWrapper.getChildItemList();
             if (childItemList != null) {
                 int childListItemCount = childItemList.size();
+                // 将展开的子节点加入mItemList中
                 for (int i = 0; i < childListItemCount; i++) {
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
                     notifyItemInserted(parentIndex + i + 1);
+                    LogUtils.d("notifyItemInserted: " + parentIndex + i + 1);
                 }
             }
         }
