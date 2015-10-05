@@ -101,6 +101,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
 
     public void bind(CharacteristicItemBean characteristicItemBean) {
         characteristicName.setText(characteristicItemBean.getCharacteristicName());
+
         characteristicUuidValue.setText(characteristicItemBean.getCharacteristicUuid());
         characteristicPropertiesValue.setText(characteristicItemBean.getCharacteristicPropertires());
         this.characteristicItemBean = characteristicItemBean;
@@ -140,6 +141,16 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         } else {
             characteristicValueText.setVisibility(View.GONE);
             characteristicValue.setVisibility(View.GONE);
+        }
+
+        if (!characteristicItemBean.getConnectState()) { // 已经断连
+            characteristicName.setTextColor(mContext.getResources().getColor(R.color.grey));
+            characteristicReadButton.setVisibility(View.GONE);
+            characteristicWriteButton.setVisibility(View.GONE);
+            characteristicCccdSwitchText.setVisibility(View.GONE);
+            characteristicCccdSwitch.setVisibility(View.GONE);
+        } else {
+            characteristicName.setTextColor(mContext.getResources().getColor(R.color.black));
         }
     }
 

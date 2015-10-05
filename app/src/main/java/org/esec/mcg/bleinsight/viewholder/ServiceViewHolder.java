@@ -5,6 +5,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ServiceItemBean;
 
@@ -21,7 +22,7 @@ public class ServiceViewHolder extends ParentViewHolder {
     public TextView mServiceNameTextView;
     public TextView mServiceUuidTextView;
     public TextView mServiceTypeTextView;
-//    public ImageView mArrowExpandImageView;
+    public PeripheralDetailActivity mContext;
 
     public ServiceViewHolder(View itemView) {
         super(itemView);
@@ -29,36 +30,18 @@ public class ServiceViewHolder extends ParentViewHolder {
         mServiceNameTextView = (TextView) itemView.findViewById(R.id.service_name);
         mServiceUuidTextView = (TextView) itemView.findViewById(R.id.service_uuid);
         mServiceTypeTextView = (TextView) itemView.findViewById(R.id.service_type);
-//        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
+        mContext = (PeripheralDetailActivity)itemView.getContext();
     }
 
     public void bind(ServiceItemBean serviceItemBean) {
         mServiceNameTextView.setText(serviceItemBean.getServiceName());
+        if (!serviceItemBean.getConnectState()) {
+            //TODO 这里方法过时，要换成colorStateList作参数
+            mServiceNameTextView.setTextColor(mContext.getResources().getColor(R.color.grey));
+        } else {
+            mServiceNameTextView.setTextColor(mContext.getResources().getColor(R.color.black));
+        }
         mServiceUuidTextView.setText(serviceItemBean.getServiceUuid());
         mServiceTypeTextView.setText(serviceItemBean.getServiceType());
     }
-
-//    @Override
-//    public void setExpanded(boolean expanded) {
-//        super.setExpanded(expanded);
-//
-//        if (expanded) {
-//            mArrowExpandImageView.setRotation(ROTATED_POSITION);
-//        } else {
-//            mArrowExpandImageView.setRotation(INITIAL_POSITION);
-//        }
-//    }
-//
-//    @Override
-//    public void onExpansionToggled(boolean expanded) {
-//        super.onExpansionToggled(expanded);
-//
-//        RotateAnimation rotateAnimation = new RotateAnimation(ROTATED_POSITION,
-//                INITIAL_POSITION,
-//                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
-//                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
-//        rotateAnimation.setDuration(DEFAULT_ROTATE_DURATION_MS);
-//        rotateAnimation.setFillAfter(true);
-//        mArrowExpandImageView.startAnimation(rotateAnimation);
-//    }
 }

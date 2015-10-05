@@ -41,7 +41,6 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         serviceParentList = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
         mContext = context;
-//        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(context);
     }
 
     public void clearList() {
@@ -96,6 +95,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
                     characteristicItemBean.setCharacteristicPropertires(propertiesString.substring(0, propertiesString.length() - 2));
                     characteristicItemBean.setSwitchState(false);
                     characteristicItemBean.setCharacteristic(characteristic);
+                    characteristicItemBean.setConnectState(true);
                     characteristicChildList.add(characteristicItemBean);
                 }
             }
@@ -108,6 +108,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
             serviceItemBean.setServiceName(name);
             serviceItemBean.setServiceUuid(uuid);
             serviceItemBean.setServiceType(type);
+            serviceItemBean.setConnectState(true);
             serviceItemBean.setChildItemList(characteristicChildList);
 
             serviceParentList.add(serviceItemBean);
@@ -116,6 +117,15 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 
     public void setParentItemList() {
         super.setParentItemList(serviceParentList);
+    }
+
+    public void setServiceCharacteristicItemGrey() {
+        for (ServiceItemBean serviceItemBean : serviceParentList) {
+            serviceItemBean.setConnectState(false);
+            for (CharacteristicItemBean charactersiticItemBean : serviceItemBean.getChildItemList()) {
+                charactersiticItemBean.setConnectState(false);
+            }
+        }
     }
 
     @Override

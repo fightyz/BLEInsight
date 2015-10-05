@@ -78,6 +78,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
                     mBLEWrapper.disconnect();
                 } else if (tv.getText().equals("CONNECT")) {
                     // TODO: 9/27/15 显示菊花进度条并连接
+                    mPeripheralDetailAdapter.clearList();
                     mBLEWrapper.connect(mDeviceAddress);
                 }
             }
@@ -162,7 +163,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
             @Override
             public void run() {
                 mDeviceRSSI = rssi + "db";
-//                mDeviceRssiView.setText(mDeviceRSSI);
                 mCollapsingToolbarLayout.setTitle(mDeviceName + mDeviceRSSI);
             }
         });
@@ -175,8 +175,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
             public void run() {
                 mDeviceStatusView.setText("disconnected");
                 connectToggle.setText("CONNECT");
-//                mCollapsingToolbarLayout.setTitle(mDeviceName);
-                mPeripheralDetailAdapter.clearList();
+                mPeripheralDetailAdapter.setServiceCharacteristicItemGrey();
+                mPeripheralDetailAdapter.notifyDataSetChanged();
             }
         });
     }

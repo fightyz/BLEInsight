@@ -15,6 +15,8 @@ public class ServiceItemBean implements ParentListItem {
     private String serviceType;
     private boolean mInitiallyExpanded;
 
+    private boolean connectState;
+
     public String getServiceName() {
         return serviceName;
     }
@@ -55,5 +57,10 @@ public class ServiceItemBean implements ParentListItem {
 
     public void setInitiallyExpanded(boolean initiallyExpanded) {
         mInitiallyExpanded = initiallyExpanded;
+    }
+
+    public boolean getConnectState() { return connectState; }
+    public void setConnectState(boolean connectState) {
+        this.connectState = connectState;
     }
 }

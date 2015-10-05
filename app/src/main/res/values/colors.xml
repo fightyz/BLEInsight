@@ -7,4 +7,6 @@
     <color name="primary_600">#1E88E5</color>
     <color name="primary">#2196F3</color>
     <color name="background_card">#FEFEFE</color>
+    <color name="grey">#BDBDBD</color>
+    <color name="black">#000000</color>
 </resources>

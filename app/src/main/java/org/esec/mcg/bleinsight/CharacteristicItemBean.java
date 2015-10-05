@@ -17,6 +17,8 @@ public class CharacteristicItemBean {
     private String characteristicValue;
     private BluetoothGattCharacteristic characteristic;
 
+    private boolean connectState;
+
     public boolean getSwitchState() { return switchState; }
     public void setSwitchState(boolean switchState) {
         this.switchState = switchState;
@@ -45,5 +47,10 @@ public class CharacteristicItemBean {
     public BluetoothGattCharacteristic getCharacteristic() { return characteristic; }
     public void setCharacteristic(BluetoothGattCharacteristic characteristic) {
         this.characteristic = characteristic;
+    }
+
+    public boolean getConnectState() { return connectState; }
+    public void setConnectState(boolean connectState) {
+        this.connectState = connectState;
     }
 }
