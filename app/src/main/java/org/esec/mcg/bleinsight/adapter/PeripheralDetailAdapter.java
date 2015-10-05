@@ -44,6 +44,12 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 //        if (mBLEWrapper == null) mBLEWrapper = new BLEWrapper(context);
     }
 
+    public void clearList() {
+        mBTService.clear();
+        mCharacteristics.clear();
+        serviceParentList.clear();
+    }
+
     /**
      * 添加service和characteristic列表
      * @param service

@@ -176,6 +176,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
                 mDeviceStatusView.setText("disconnected");
                 connectToggle.setText("CONNECT");
 //                mCollapsingToolbarLayout.setTitle(mDeviceName);
+                mPeripheralDetailAdapter.clearList();
             }
         });
     }
