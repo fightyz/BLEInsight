@@ -17,6 +17,7 @@ import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.CommandUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -28,6 +29,9 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
     public TextView characteristicName;
     public TextView characteristicUuidValue;
     public TextView characteristicPropertiesValue;
+    public TextView characteristicValueText;
+    public TextView characteristicValue;
+
     public Switch characteristicCccdSwitch;
     public Button characteristicReadButton;
     public Button characteristicWriteButton;
@@ -43,6 +47,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicName = (TextView) itemView.findViewById(R.id.characteristic_name);
         characteristicUuidValue = (TextView) itemView.findViewById(R.id.characteristic_uuid_value);
         characteristicPropertiesValue = (TextView) itemView.findViewById(R.id.characteristic_properties_value);
+        characteristicValueText = (TextView) itemView.findViewById(R.id.characteristic_value_text);
+        characteristicValue = (TextView) itemView.findViewById(R.id.characteristic_value);
 
         characteristicCccdSwitch = (Switch) itemView.findViewById(R.id.cccd_switch);
         characteristicCccdSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -99,7 +105,10 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
             public void run() {
                 LogUtils.d(characteristicItemBean.getCharacteristicName());
                 characteristicItemBean.setCharacteristicPropertires(strValue);
-                characteristicPropertiesValue.setText(strValue);
+//                characteristicPropertiesValue.setText(strValue);
+                characteristicValueText.setVisibility(View.VISIBLE);
+                characteristicValue.setVisibility(View.VISIBLE);
+                characteristicValue.setText(strValue);
             }
         });
         /**

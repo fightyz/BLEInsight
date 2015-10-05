@@ -50,12 +50,32 @@
         android:layout_toRightOf="@+id/characteristic_properties"
         android:paddingLeft="8dp" />
 
+    <TextView
+        android:id="@+id/characteristic_value_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Value"
+        android:textColor="#BDBDBD"
+        android:layout_below="@+id/characteristic_properties"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/characteristic_value"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:text="characteristic value"
+        android:layout_below="@+id/characteristic_properties_value"
+        android:layout_toRightOf="@+id/characteristic_value_text"
+        android:paddingLeft="8dp"
+        android:visibility="gone"/>
+
     <Button
         android:id="@+id/read_button"
         android:layout_width="60dp"
         android:layout_height="35dp"
         android:text="read"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:textColor="#004D40"
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentTop="true"
@@ -81,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NOTIFY"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:textColor="#004D40"
             android:id="@+id/textView"
             android:layout_toLeftOf="@+id/cccd_switch"
