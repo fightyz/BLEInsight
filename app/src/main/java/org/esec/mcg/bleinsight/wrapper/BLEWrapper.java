@@ -65,6 +65,7 @@ public class BLEWrapper implements Cloneable {
     private final BluetoothGattCallback mBleCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            LogUtils.d("Connect??");
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 mConnected = true;
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
@@ -225,6 +226,7 @@ public class BLEWrapper implements Cloneable {
 
         // 判断是重新连接还是新建连接
         if (mBluetoothGatt != null && mBluetoothGatt.getDevice().getAddress().equals(deviceAddress)) {
+            LogUtils.d("reconnect??");
             return mBluetoothGatt.connect();
         } else {
             mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mDeviceAddress);
@@ -241,7 +243,7 @@ public class BLEWrapper implements Cloneable {
      */
     public void disconnect() {
         if (mBluetoothGatt != null) mBluetoothGatt.disconnect();
-        mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
+        mInsightDevcieUiCallbacks.uiDeviceDisconnected(mBluetoothGatt, mBluetoothDevice);
     }
 
     /**

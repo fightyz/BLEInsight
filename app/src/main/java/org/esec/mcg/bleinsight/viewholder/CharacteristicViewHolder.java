@@ -138,8 +138,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
             characteristicValue.setVisibility(View.VISIBLE);
             characteristicValue.setText(characteristicItemBean.getCharacteristicValue());
         } else {
-            characteristicValueText.setVisibility(View.INVISIBLE);
-            characteristicValue.setVisibility(View.INVISIBLE);
+            characteristicValueText.setVisibility(View.GONE);
+            characteristicValue.setVisibility(View.GONE);
         }
     }
 

@@ -44,8 +44,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private TextView mDeviceNameView;
     private TextView mDeviceAddressView;
-//    private TextView mDeviceRssiView;
     private TextView mDeviceStatusView;
+    private TextView connectToggle;
     private Toolbar toolbar;
 
     private PeripheralDetailAdapter mPeripheralDetailAdapter;
@@ -59,41 +59,26 @@ public class PeripheralDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_peripheral_detail);
 
         connectViewsVariables();
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
         setSupportActionBar(toolbar);
-
-
-//        mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getCR.color.white);
 
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
-//        mDeviceNameView.setText(mDeviceName);
         mDeviceAddressView.setText(mDeviceAddress);
-//        mDeviceRssiView.setText(mDeviceRSSI);
 
         mCollapsingToolbarLayout.setTitle(mDeviceName);
 
-
-//        toolbar.setTitle(mDeviceName);
-//        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-//        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp));
-
-        final TextView connectToggle = (TextView) findViewById(R.id.connect_toggle);
         connectToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView tv = (TextView) v;
                 if (tv.getText().equals("DISCONNECT")) {
                     // TODO 将界面中所有字体设置为灰色
+                    mBLEWrapper.disconnect();
                 } else if (tv.getText().equals("CONNECT")) {
                     // TODO: 9/27/15 显示菊花进度条并连接
+                    mBLEWrapper.connect(mDeviceAddress);
                 }
             }
         });
@@ -131,6 +116,13 @@ public class PeripheralDetailActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mBLEWrapper.disconnect();
+        mBLEWrapper.close();
+    }
+
+    @Override
     public void onListItemExpanded(int position) {
         String toastMessage = getString(R.string.item_expanded, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
@@ -144,12 +136,11 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private void connectViewsVariables() {
         toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
-//        mDeviceNameView = (TextView) findViewById(R.id.peripheral_name);
         mDeviceAddressView = (TextView) findViewById(R.id.peripheral_address);
-//        mDeviceRssiView = (TextView) findViewById(R.id.peripheral_rssi);
         mDeviceStatusView = (TextView) findViewById(R.id.peripheral_status);
         mRecyclerView = (RecyclerView) findViewById(R.id.peripheral_detail_recycler_view);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        connectToggle = (TextView) findViewById(R.id.connect_toggle);
     }
 
     public BLEWrapper getBLEWrapper() { return mBLEWrapper; }
@@ -160,6 +151,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
             @Override
             public void run() {
                 mDeviceStatusView.setText("connected");
+                connectToggle.setText("DISCONNECT");
             }
         });
     }
@@ -178,7 +170,14 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     @Override
     public void uiDeviceDisconnected(BluetoothGatt gatt, BluetoothDevice device) {
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceStatusView.setText("disconnected");
+                connectToggle.setText("CONNECT");
+//                mCollapsingToolbarLayout.setTitle(mDeviceName);
+            }
+        });
     }
 
     @Override
