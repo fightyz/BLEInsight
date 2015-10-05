@@ -79,7 +79,8 @@
         android:textColor="#004D40"
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/write_button" />
+        android:layout_toStartOf="@+id/write_button"
+        android:enabled="false"/>
 
     <Button
         android:id="@+id/write_button"
@@ -90,7 +91,8 @@
         android:textSize="12dp"
         android:textColor="#004D40"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:enabled="false"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -98,20 +100,22 @@
         android:layout_below="@id/write_button">
 
         <TextView
+            android:id="@+id/cccd_switch_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NOTIFY"
             android:textSize="12sp"
             android:textColor="#004D40"
-            android:id="@+id/textView"
             android:layout_toLeftOf="@+id/cccd_switch"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
 
         <Switch
             android:id="@+id/cccd_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

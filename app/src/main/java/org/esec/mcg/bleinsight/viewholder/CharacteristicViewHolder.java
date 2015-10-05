@@ -32,6 +32,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
     public TextView characteristicValueText;
     public TextView characteristicValue;
 
+    public TextView characteristicCccdSwitchText;
     public Switch characteristicCccdSwitch;
     public Button characteristicReadButton;
     public Button characteristicWriteButton;
@@ -50,6 +51,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicValueText = (TextView) itemView.findViewById(R.id.characteristic_value_text);
         characteristicValue = (TextView) itemView.findViewById(R.id.characteristic_value);
 
+        characteristicCccdSwitchText = (TextView) itemView.findViewById(R.id.cccd_switch_text);
         characteristicCccdSwitch = (Switch) itemView.findViewById(R.id.cccd_switch);
         characteristicCccdSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,6 +97,22 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicPropertiesValue.setText(characteristicItemBean.getCharacteristicPropertires());
         this.characteristicItemBean = characteristicItemBean;
         characteristicCccdSwitch.setChecked(characteristicItemBean.getSwitchState());
+        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) {
+            characteristicWriteButton.setEnabled(true);
+        }
+        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
+            characteristicReadButton.setEnabled(true);
+        }
+        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+            characteristicCccdSwitchText.setVisibility(View.VISIBLE);
+            characteristicCccdSwitchText.setText("NOTIFY");
+            characteristicCccdSwitch.setVisibility(View.VISIBLE);
+        }
+        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+            characteristicCccdSwitchText.setVisibility(View.VISIBLE);
+            characteristicCccdSwitchText.setText("INDICATE");
+            characteristicCccdSwitch.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
