@@ -7,10 +7,14 @@ import android.bluetooth.BluetoothGattCharacteristic;
  */
 public class CharacteristicItemBean {
 
+    /**
+     * cccd button的状态
+     */
     private boolean switchState;
     private String characteristicName;
     private String characteristicUuid;
     private String characteristicPropertires;
+    private String characteristicValue;
     private BluetoothGattCharacteristic characteristic;
 
     public boolean getSwitchState() { return switchState; }
@@ -31,6 +35,11 @@ public class CharacteristicItemBean {
     public String getCharacteristicPropertires() { return characteristicPropertires; }
     public void setCharacteristicPropertires(String characteristicPropertires) {
         this.characteristicPropertires = characteristicPropertires;
+    }
+
+    public String getCharacteristicValue() { return characteristicValue; }
+    public void setCharacteristicValue(String characteristicValue) {
+        this.characteristicValue = characteristicValue;
     }
 
     public BluetoothGattCharacteristic getCharacteristic() { return characteristic; }

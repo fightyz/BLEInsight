@@ -39,6 +39,11 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
 
     public CharacteristicItemBean characteristicItemBean;
 
+    /**
+     * 每一个ViewHolder都持有自己的BLEWrapper实例，克隆自PeripheralDetailActivity的BLEWrapper实例
+     * 并在之后将context中的BLEWrapper实例设置为该viewHolder的BLEWrapper实例，这样能够保证回调时是回到
+     * 该ViewHolder
+     */
     private BLEWrapper mBLEWrapper;
     private PeripheralDetailActivity mContext;
 
@@ -70,6 +75,9 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                 LogUtils.d(mBLEWrapper.toString());
                 BluetoothGattCharacteristic characteristic = characteristicItemBean.getCharacteristic();
                 LogUtils.d(characteristicItemBean.getCharacteristicName());
+                /**
+                 * 让context中持有该ViewHolder的BLEWrapper实例
+                 */
                 mContext.getBLEWrapper().self = mBLEWrapper;
                 mBLEWrapper.requestCharacteristicValue(characteristic);
             }
@@ -96,22 +104,42 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicUuidValue.setText(characteristicItemBean.getCharacteristicUuid());
         characteristicPropertiesValue.setText(characteristicItemBean.getCharacteristicPropertires());
         this.characteristicItemBean = characteristicItemBean;
+
         characteristicCccdSwitch.setChecked(characteristicItemBean.getSwitchState());
+
         if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) {
             characteristicWriteButton.setEnabled(true);
+            characteristicWriteButton.setVisibility(View.VISIBLE);
+        } else {
+            characteristicWriteButton.setVisibility(View.GONE);
         }
         if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
             characteristicReadButton.setEnabled(true);
+            characteristicReadButton.setVisibility(View.VISIBLE);
+        } else {
+            characteristicReadButton.setVisibility(View.GONE);
         }
-        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0 ||
+                (characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
             characteristicCccdSwitchText.setVisibility(View.VISIBLE);
-            characteristicCccdSwitchText.setText("NOTIFY");
             characteristicCccdSwitch.setVisibility(View.VISIBLE);
+            if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                characteristicCccdSwitchText.setText("NOTIFY");
+            } else {
+                characteristicCccdSwitchText.setText("INDICATE");
+            }
+        } else {
+            characteristicCccdSwitchText.setVisibility(View.INVISIBLE);
+            characteristicCccdSwitch.setVisibility(View.INVISIBLE);
         }
-        if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-            characteristicCccdSwitchText.setVisibility(View.VISIBLE);
-            characteristicCccdSwitchText.setText("INDICATE");
-            characteristicCccdSwitch.setVisibility(View.VISIBLE);
+
+        if (characteristicItemBean.getCharacteristicValue() != null) {
+            characteristicValueText.setVisibility(View.VISIBLE);
+            characteristicValue.setVisibility(View.VISIBLE);
+            characteristicValue.setText(characteristicItemBean.getCharacteristicValue());
+        } else {
+            characteristicValueText.setVisibility(View.INVISIBLE);
+            characteristicValue.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -121,9 +149,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         mContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LogUtils.d(characteristicItemBean.getCharacteristicName());
-                characteristicItemBean.setCharacteristicPropertires(strValue);
-//                characteristicPropertiesValue.setText(strValue);
+                characteristicItemBean.setCharacteristicValue(strValue);
                 characteristicValueText.setVisibility(View.VISIBLE);
                 characteristicValue.setVisibility(View.VISIBLE);
                 characteristicValue.setText(strValue);

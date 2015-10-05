@@ -70,34 +70,44 @@
         android:paddingLeft="8dp"
         android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/read_button"
-        android:layout_width="60dp"
-        android:layout_height="35dp"
-        android:text="read"
-        android:textSize="12sp"
-        android:textColor="#004D40"
-        style="?android:attr/borderlessButtonStyle"
+    <LinearLayout
+        android:id="@+id/read_write_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/write_button"
-        android:enabled="false"/>
+        android:layout_alignParentRight="true">
 
-    <Button
-        android:id="@+id/write_button"
-        android:layout_width="60dp"
-        android:layout_height="35dp"
-        style="?android:attr/borderlessButtonStyle"
-        android:text="write"
-        android:textSize="12dp"
-        android:textColor="#004D40"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:enabled="false"/>
+        <Button
+            android:id="@+id/read_button"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:text="read"
+            android:textSize="12sp"
+            android:textColor="#004D40"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_toStartOf="@+id/write_button"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/write_button"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="write"
+            android:textSize="12dp"
+            android:textColor="#004D40"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/write_button">
+        android:layout_below="@+id/read_write_layout">
 
         <TextView
             android:id="@+id/cccd_switch_text"
