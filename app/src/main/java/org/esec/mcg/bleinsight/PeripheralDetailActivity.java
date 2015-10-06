@@ -1,6 +1,7 @@
 package org.esec.mcg.bleinsight;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -53,6 +54,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +77,10 @@ public class PeripheralDetailActivity extends AppCompatActivity
             public void onClick(View v) {
                 TextView tv = (TextView) v;
                 if (tv.getText().equals("DISCONNECT")) {
-                    // TODO 将界面中所有字体设置为灰色
+                    mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "断连中...");
                     mBLEWrapper.disconnect();
                 } else if (tv.getText().equals("CONNECT")) {
-                    // TODO: 9/27/15 显示菊花进度条并连接
+                    mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "连接中...");
                     mPeripheralDetailAdapter.clearList();
                     mBLEWrapper.connect(mDeviceAddress);
                 }
@@ -113,6 +116,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
             mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
 
         mDeviceStatusView.setText("connecting...");
+        mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "连接中...");
         mBLEWrapper.connect(mDeviceAddress);
     }
 
@@ -151,6 +155,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 mDeviceStatusView.setText("connected");
                 connectToggle.setText("DISCONNECT");
             }
@@ -177,6 +182,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
                 connectToggle.setText("CONNECT");
                 mPeripheralDetailAdapter.setServiceCharacteristicItemGrey();
                 mPeripheralDetailAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
             }
         });
     }
@@ -192,6 +198,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
                 mPeripheralDetailAdapter.setParentItemList();
                 mPeripheralDetailAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
             }
         });
     }
