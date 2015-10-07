@@ -29,6 +29,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
     public TextView characteristicName;
     public TextView characteristicUuidValue;
     public TextView characteristicPropertiesValue;
+    public TextView characteristicWriteType;
+    public TextView characteristicWriteTypeValue;
     public TextView characteristicValueText;
     public TextView characteristicValue;
 
@@ -53,6 +55,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicName = (TextView) itemView.findViewById(R.id.characteristic_name);
         characteristicUuidValue = (TextView) itemView.findViewById(R.id.characteristic_uuid_value);
         characteristicPropertiesValue = (TextView) itemView.findViewById(R.id.characteristic_properties_value);
+        characteristicWriteType = (TextView) itemView.findViewById(R.id.characteristic_write_type);
+        characteristicWriteTypeValue = (TextView) itemView.findViewById(R.id.characteristic_write_type_value);
         characteristicValueText = (TextView) itemView.findViewById(R.id.characteristic_value_text);
         characteristicValue = (TextView) itemView.findViewById(R.id.characteristic_value);
 
@@ -111,8 +115,14 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) {
             characteristicWriteButton.setEnabled(true);
             characteristicWriteButton.setVisibility(View.VISIBLE);
+
+            characteristicWriteType.setVisibility(View.VISIBLE);
+            characteristicWriteTypeValue.setVisibility(View.VISIBLE);
+            characteristicWriteTypeValue.setText("WRITE REQUEST");
         } else {
             characteristicWriteButton.setVisibility(View.GONE);
+            characteristicWriteType.setVisibility(View.GONE);
+            characteristicWriteTypeValue.setVisibility(View.GONE);
         }
         if ((characteristicItemBean.getCharacteristic().getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
             characteristicReadButton.setEnabled(true);
