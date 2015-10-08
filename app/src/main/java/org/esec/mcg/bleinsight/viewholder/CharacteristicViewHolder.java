@@ -79,6 +79,9 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                     characteristicItemBean.setSwitchState(isChecked);
                 }
                 mContext.getBLEWrapper().self = mBLEWrapper;
+                // 因为当页面中同时出现两个notify的时候，后出现的notify B也会调用上面的方法设置self，从而将notify A
+                // 所持有的BLEWrapper给冲刷掉，因此需要维护一个map，使程序知道回调时是哪个characteristic的值
+                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
                 // 根据是notify还是indicate向cccd写入不同的值
                 // 开启cccd
                 mBLEWrapper.setCccdForCharacteristic(characteristicItemBean.getCharacteristic(), isChecked);
@@ -185,7 +188,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
 
     @Override
     public void uiNewValueForCharacteristic(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, BluetoothGattCharacteristic ch, final String strValue) {
-        LogUtils.d("read characteristic callback");
+//        LogUtils.d("read characteristic callback");
         mContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {

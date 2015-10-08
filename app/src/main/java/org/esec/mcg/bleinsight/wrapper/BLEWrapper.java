@@ -21,7 +21,9 @@ import android.util.Log;
 import org.esec.mcg.utils.ByteUtil;
 import org.esec.mcg.utils.logger.LogUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -53,6 +55,13 @@ public class BLEWrapper implements Cloneable {
     private boolean mTimerEnabled = false;
 
     public BLEWrapper self;
+
+    /**
+     * 设置characteristic - BLEWrapper的Map
+     * 避免出现页面里同时有两个notify时，notify B将notify A的BLEWrapper给冲刷掉
+     *
+     */
+    private Map<BluetoothGattCharacteristic, BLEWrapper> charWrapperMap;
 
     public List<BluetoothGattService> getCachedServices() {return mBluetoothGattServices;}
 
@@ -117,14 +126,23 @@ public class BLEWrapper implements Cloneable {
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
+//            self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
+//                    mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+            if (charWrapperMap.containsKey(characteristic)) {
+                charWrapperMap.get(characteristic).mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
                     mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+            }
         }
     };
 
     public BLEWrapper(Context context) {
         this.mContext = context;
         self = this;
+        charWrapperMap = new HashMap<>();
+    }
+
+    public void addCharWrapperElement(BluetoothGattCharacteristic ch, BLEWrapper BleWrapper) {
+        charWrapperMap.put(ch, BleWrapper);
     }
 
     /**
