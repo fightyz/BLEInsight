@@ -82,9 +82,11 @@ public class BLEWrapper implements Cloneable {
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
 
                 startServicesDiscovery();
+
 //                startMonitoringRssiValue();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                LogUtils.d("DISCONNECT!!!");
                 mConnected = false;
                 mInsightDevcieUiCallbacks.uiDeviceDisconnected(mBluetoothGatt, mBluetoothDevice);
             }
@@ -136,6 +138,7 @@ public class BLEWrapper implements Cloneable {
     };
 
     public BLEWrapper(Context context) {
+        LogUtils.d("BLEWrapper constructor!!!");
         this.mContext = context;
         self = this;
         charWrapperMap = new HashMap<>();
@@ -283,6 +286,10 @@ public class BLEWrapper implements Cloneable {
     public void disconnect() {
         if (mBluetoothGatt != null) mBluetoothGatt.disconnect();
         mInsightDevcieUiCallbacks.uiDeviceDisconnected(mBluetoothGatt, mBluetoothDevice);
+    }
+
+    public void disconnectWithoutCallback() {
+        if (mBluetoothGatt != null) mBluetoothGatt.disconnect();
     }
 
     /**

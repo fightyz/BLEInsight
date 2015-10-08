@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import org.esec.mcg.bleinsight.PeripheralActivity;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
+import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,10 +35,6 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
     private ArrayList<Queue<Integer>> mRssiList; /* ArrayList对应每个设备，Queue对应设备的rssi值队列 */
     private ScanDeviceActivity mParent;
 
-    private String name;
-    private String address;
-    private String rssiString;
-    private String bondStateString;
     public static boolean startUpdateRssiThread = true;
     private static boolean repeatEnable = false;
 
@@ -118,11 +116,25 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
     }
 
     @Override
-    public void onBindViewHolder(ListItemViewHolder holder, int position) {
-        BluetoothDevice device = mDevices.get(position);
+    public long getItemId(int position) {
+        LogUtils.d("getItemId: " + position);
+        return position;
+    }
 
-        name = device.getName();
-        if (name == null || name.length() <= 0) name = "Unknown Device";
+    @Override
+    public void onBindViewHolder(ListItemViewHolder holder, final int position) {
+        final String name;
+        final String address;
+        final String rssiString;
+        final String bondStateString;
+
+        LogUtils.d("onBindViewHolder: " + position);
+        BluetoothDevice device = mDevices.get(position);
+        LogUtils.d(mDevices);
+
+        String tmpName = device.getName();
+        if (tmpName == null || tmpName.length() <= 0) name = "Unknown Device";
+        else name = tmpName;
 
         address = device.getAddress();
 
@@ -164,6 +176,10 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
 //                }
 //
 //                mParent.startActivity(intent);
+                LogUtils.d(mDevices);
+                LogUtils.d("On Click Connect Button: " + position);
+                LogUtils.d("device name: " + name);
+                LogUtils.d("device address: " + address);
                 final Intent intent = new Intent(mParent, PeripheralDetailActivity.class);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_NAME, name);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_ADDRESS, address);

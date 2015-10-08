@@ -123,7 +123,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        mBLEWrapper.disconnect();
+        mBLEWrapper.disconnectWithoutCallback();
         mBLEWrapper.close();
     }
 
