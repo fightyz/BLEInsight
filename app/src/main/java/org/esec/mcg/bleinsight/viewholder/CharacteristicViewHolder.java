@@ -78,6 +78,10 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                 if (characteristicItemBean != null) {
                     characteristicItemBean.setSwitchState(isChecked);
                 }
+                mContext.getBLEWrapper().self = mBLEWrapper;
+                // 根据是notify还是indicate向cccd写入不同的值
+                // 开启cccd
+                mBLEWrapper.setCccdForCharacteristic(characteristicItemBean.getCharacteristic(), isChecked);
             }
         });
 

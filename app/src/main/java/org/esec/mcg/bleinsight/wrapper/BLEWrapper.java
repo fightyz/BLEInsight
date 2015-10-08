@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -22,6 +23,7 @@ import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.UUID;
 
 /**
  * Created by yz on 2015/9/9.
@@ -111,6 +113,12 @@ public class BLEWrapper implements Cloneable {
                 self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
                         mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
             }
+        }
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
+                    mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
         }
     };
 
@@ -341,11 +349,44 @@ public class BLEWrapper implements Cloneable {
         mBluetoothGatt.readCharacteristic(characteristic);
     }
 
+    /**
+     * 向characteristic中写入数据
+     * @param ch
+     * @param dataToWrite
+     */
     public void writeDataToCharacteristic(final BluetoothGattCharacteristic ch, final byte[] dataToWrite) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null || ch == null) return;
 
         ch.setValue(dataToWrite);
         mBluetoothGatt.writeCharacteristic(ch);
+    }
+
+    /**
+     * characteristic的cccd的开关
+     * @param ch
+     * @param enabled
+     */
+    public void setCccdForCharacteristic(BluetoothGattCharacteristic ch, boolean enabled) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) return;
+
+        boolean success = mBluetoothGatt.setCharacteristicNotification(ch, enabled);
+        if (!success) {
+            //TODO 这里不成功的话要给用户一个callback
+        }
+
+        int props = ch.getProperties();
+        byte[] ENABLE_VALUE = null;
+        if ((props & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+            ENABLE_VALUE = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE;
+        } else if ((props & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+            ENABLE_VALUE = BluetoothGattDescriptor.ENABLE_INDICATION_VALUE;
+        }
+        BluetoothGattDescriptor descriptor = ch.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+        if (descriptor != null) {
+            byte[] val = enabled ? ENABLE_VALUE : BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
+            descriptor.setValue(val);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
     }
 
     public void getCharacteristicValue(BluetoothGattCharacteristic characteristic) {
