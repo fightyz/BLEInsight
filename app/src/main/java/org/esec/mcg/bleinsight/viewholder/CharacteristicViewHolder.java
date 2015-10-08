@@ -5,15 +5,18 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
+import org.esec.mcg.bleinsight.WriteValueDialog;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.CommandUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
@@ -51,6 +54,13 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
 
     public CharacteristicViewHolder(View itemView) {
         super(itemView);
+
+        /**
+         * 每一个ViewHolder持有自己的BLEWrapper
+         */
+        mContext = (PeripheralDetailActivity)itemView.getContext();
+        mBLEWrapper = (BLEWrapper)mContext.getBLEWrapper().clone();
+        mBLEWrapper.setCommandUiCallbacks(this);
 
         characteristicName = (TextView) itemView.findViewById(R.id.characteristic_name);
         characteristicUuidValue = (TextView) itemView.findViewById(R.id.characteristic_uuid_value);
@@ -91,14 +101,19 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         characteristicWriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                new AlertDialog.Builder(mContext).setView(new EditText(mContext)).setTitle("Write Value")
+//                        .setPositiveButton("确定", null).setNegativeButton("取消", null).show();
+                mContext.getBLEWrapper().self = mBLEWrapper;
+                WriteValueDialog writeValueDialog = new WriteValueDialog(mContext, mBLEWrapper, characteristicItemBean);
+                writeValueDialog.show();
+//                new AlertDialog.Builder(mContext).setView(R.layout.write_value_dialog).setTitle("Write Value")
+//                        .setPositiveButton("确定", null).setNegativeButton("取消", null).show();
             }
         });
 
-        mContext = (PeripheralDetailActivity)itemView.getContext();
-        mBLEWrapper = (BLEWrapper)mContext.getBLEWrapper().clone();
 
-        mBLEWrapper.setCommandUiCallbacks(this);
+
+
         LogUtils.d("mBLEWrapper addr: " + mBLEWrapper);
         LogUtils.d("origin BLEWrapper: " + mContext.getBLEWrapper());
     }

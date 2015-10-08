@@ -99,6 +99,19 @@ public class BLEWrapper implements Cloneable {
                 getCharacteristicValue(characteristic);
             }
         }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                LogUtils.d("write response success");
+                LogUtils.d(ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+                if (self.mCommandUiCallbacks == null) {
+                    LogUtils.d("mCommanduiCallbacks is null");
+                }
+                self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
+                        mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+            }
+        }
     };
 
     public BLEWrapper(Context context) {
@@ -318,10 +331,21 @@ public class BLEWrapper implements Cloneable {
         mBluetoothSelectedService = service;
     }
 
+    /**
+     * 读取charactersitic的value
+     * @param characteristic
+     */
     public void requestCharacteristicValue(BluetoothGattCharacteristic characteristic) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) return;
+        if (mBluetoothAdapter == null || mBluetoothGatt == null || characteristic == null) return;
 
         mBluetoothGatt.readCharacteristic(characteristic);
+    }
+
+    public void writeDataToCharacteristic(final BluetoothGattCharacteristic ch, final byte[] dataToWrite) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null || ch == null) return;
+
+        ch.setValue(dataToWrite);
+        mBluetoothGatt.writeCharacteristic(ch);
     }
 
     public void getCharacteristicValue(BluetoothGattCharacteristic characteristic) {
@@ -333,7 +357,7 @@ public class BLEWrapper implements Cloneable {
         if (rawValue.length > 0) {
             strValue = ByteUtil.ByteArrayToHexString(rawValue);
         }
-        if (mCommandUiCallbacks == null) {
+        if (self.mCommandUiCallbacks == null) {
             LogUtils.d("mCommandUiCallbacks is null");
             LogUtils.d(this);
             Log.d("yz",this.toString());
