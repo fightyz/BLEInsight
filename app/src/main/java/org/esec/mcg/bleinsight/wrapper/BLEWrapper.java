@@ -44,6 +44,7 @@ public class BLEWrapper implements Cloneable {
     private BluetoothGatt mBluetoothGatt = null;
     private BluetoothDevice mBluetoothDevice = null;
     private Handler mHandler = new Handler();
+    private Runnable timeout;
     private Queue<Integer> rssiQueue;
     private List<BluetoothGattService> mBluetoothGattServices = null;
     private BluetoothGattService mBluetoothSelectedService = null;
@@ -236,7 +237,7 @@ public class BLEWrapper implements Cloneable {
         if (scanningTimeout == 0) {
             scanningTimeout = SCANNING_TIMEOUT;
         }
-        Runnable timeout = new Runnable() {
+        timeout = new Runnable() {
             @Override
             public void run() {
                 stopScanning();
@@ -254,6 +255,7 @@ public class BLEWrapper implements Cloneable {
      * 停止扫描BLE设备
      */
     public void stopScanning() {
+        mHandler.removeCallbacks(timeout);
         mBluetoothLeScanner.stopScan(mScanCallback);
     }
 

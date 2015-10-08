@@ -126,6 +126,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         scanToggle.setText("SCAN");
         findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
         mScanning = false;
+        mBLEWrapper.stopScanning();
         mScanDeviceAdapter.updatePeriodicalyRssi(false);
     }
 

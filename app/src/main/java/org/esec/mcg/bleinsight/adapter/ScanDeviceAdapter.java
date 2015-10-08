@@ -75,6 +75,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
     }
 
     public void updatePeriodicalyRssi(final boolean repeat) {
+        LogUtils.d("repeat = " + repeat);
         repeatEnable = repeat;
         if (repeatEnable == false) {
             startUpdateRssiThread = true;
@@ -92,6 +93,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
                         mRssis.set(i, rssiQueue.remove()); /* 更新adapter中rssi值列表 */
                     }
                 } // 设备列表遍历完成
+                LogUtils.d("notifyDataSetChanged???");
                 notifyDataSetChanged(); /* rssi值列表有更新，通知界面刷新 */
                 updatePeriodicalyRssi(repeatEnable);
             }
