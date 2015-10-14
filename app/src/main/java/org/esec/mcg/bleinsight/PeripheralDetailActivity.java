@@ -37,6 +37,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
+    private boolean PAUSE_FLAG = false;
+
     private String mDeviceName;
     private String mDeviceAddress;
     private String mDeviceRSSI;
@@ -101,7 +103,13 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        LogUtils.d("PAUSE_FLAG = " + PAUSE_FLAG);
         super.onResume();
+
+        if (PAUSE_FLAG) {
+            PAUSE_FLAG = false;
+            return;
+        }
 
         if (mBLEWrapper.isBtEnabled() == false) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -123,6 +131,16 @@ public class PeripheralDetailActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+        PAUSE_FLAG = true;
+//        mPeripheralDetailAdapter.clearList();
+//        mBLEWrapper.disconnectWithoutCallback();
+//        mBLEWrapper.close();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPeripheralDetailAdapter.clearList();
         mBLEWrapper.disconnectWithoutCallback();
         mBLEWrapper.close();
     }
