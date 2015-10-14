@@ -100,6 +100,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                  * 让context中持有该ViewHolder的BLEWrapper实例
                  */
                 mContext.getBLEWrapper().self = mBLEWrapper;
+//                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
                 mBLEWrapper.requestCharacteristicValue(characteristic);
             }
         });
@@ -187,15 +188,17 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
     }
 
     @Override
-    public void uiNewValueForCharacteristic(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, BluetoothGattCharacteristic ch, final String strValue) {
+    public void uiNewValueForCharacteristic(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, final BluetoothGattCharacteristic ch, final String strValue) {
 //        LogUtils.d("read characteristic callback");
         mContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                characteristicItemBean.setCharacteristicValue(strValue);
-                characteristicValueText.setVisibility(View.VISIBLE);
-                characteristicValue.setVisibility(View.VISIBLE);
-                characteristicValue.setText(strValue);
+                if (ch.getUuid().compareTo(characteristicItemBean.getCharacteristic().getUuid()) == 0) {
+                    characteristicItemBean.setCharacteristicValue(strValue);
+                    characteristicValueText.setVisibility(View.VISIBLE);
+                    characteristicValue.setVisibility(View.VISIBLE);
+                    characteristicValue.setText(strValue);
+                }
             }
         });
         /**
