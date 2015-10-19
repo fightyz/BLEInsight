@@ -1,6 +1,5 @@
 package org.esec.mcg.bleinsight;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,22 +8,28 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.esec.mcg.bleinsight.adapter.ExpandableRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralDetailAdapter;
+import org.esec.mcg.bleinsight.adapter.PeripheralPagerAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PeripheralDetailActivity extends AppCompatActivity
@@ -49,9 +54,12 @@ public class PeripheralDetailActivity extends AppCompatActivity
     private TextView mDeviceAddressView;
     private TextView mDeviceStatusView;
     private TextView connectToggle;
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
     private PeripheralDetailAdapter mPeripheralDetailAdapter;
+    private PeripheralPagerAdapter mPeripheralPagerAdapter;
 
     private RecyclerView mRecyclerView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
@@ -64,7 +72,13 @@ public class PeripheralDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_peripheral_detail);
 
         connectViewsVariables();
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
+
+        mPeripheralPagerAdapter = new PeripheralPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mPeripheralPagerAdapter);
+        mTabLayout.setTabsFromPagerAdapter(mPeripheralPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -95,6 +109,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
 
         mPeripheralDetailAdapter.setExpandCollapseListener(this);
+
+        mRecyclerView = new RecyclerView(this);
 
         mRecyclerView.setAdapter(mPeripheralDetailAdapter);
 
@@ -158,12 +174,14 @@ public class PeripheralDetailActivity extends AppCompatActivity
     }
 
     private void connectViewsVariables() {
-        toolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.peripheral_toolbar);
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mDeviceAddressView = (TextView) findViewById(R.id.peripheral_address);
         mDeviceStatusView = (TextView) findViewById(R.id.peripheral_status);
-        mRecyclerView = (RecyclerView) findViewById(R.id.peripheral_detail_recycler_view);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.peripheral_detail_recycler_view);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
         connectToggle = (TextView) findViewById(R.id.connect_toggle);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
     }
 
     public BLEWrapper getBLEWrapper() { return mBLEWrapper; }
@@ -224,5 +242,39 @@ public class PeripheralDetailActivity extends AppCompatActivity
     @Override
     public void uiCharacteristicsForService(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, List<BluetoothGattCharacteristic> characteristic) {
 
+    }
+
+//    public static class PeripheralDetailFragment extends Fragment {
+//        public static final String ARG_PAGE = "arg_page";
+//
+//        public PeripheralDetailFragment() {
+//
+//        }
+//
+//        public PeripheralDetailFragment newInstance(int pageNumber) {
+//            PeripheralDetailFragment myFragment = new PeripheralDetailFragment();
+//            Bundle arguments = new Bundle();
+//            arguments.putInt(ARG_PAGE, pageNumber + 1);
+//            myFragment.setArguments(arguments);
+//            return myFragment;
+//        }
+//
+//        @Nullable
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//            Bundle arguments = getArguments();
+//            int pageNumber = arguments.getInt(ARG_PAGE);
+//            // TODO 初始化RecyclerView
+//            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.peripheral_detail_recycler_view);
+//            recyclerView.setAdapter(((PeripheralDetailActivity)getActivity()));
+//        }
+//    }
+
+    public PeripheralDetailAdapter getPeripheralDetailAdapter() {
+        return mPeripheralDetailAdapter;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 }

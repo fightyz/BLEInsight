@@ -9,4 +9,5 @@
     <color name="background_card">#FEFEFE</color>
     <color name="grey">#BDBDBD</color>
     <color name="black">#000000</color>
+    <color name="tab_indicator">#607D8B</color>
 </resources>

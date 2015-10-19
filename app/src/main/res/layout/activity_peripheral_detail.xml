@@ -1,15 +1,13 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
@@ -17,114 +15,95 @@
             android:layout_height="match_parent"
             android:background="@color/status_bar_color"
             app:contentScrim="?attr/colorPrimary"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginStart="@dimen/expanded_toolbar_title_margin_start"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|enterAlways">
 
-                <TableLayout
-                    android:id="@+id/peripheral_header"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin">
-
-                    <!--<TableRow-->
-                        <!--android:id="@+id/peripheral_name_row"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_gravity="right"-->
-                            <!--android:layout_weight="0"-->
-                            <!--android:text="Peripheral:"/>-->
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/peripheral_name"-->
-                            <!--android:layout_width="fill_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginLeft="10dp"-->
-                            <!--android:layout_weight="99"-->
-                            <!--android:textStyle="bold"/>-->
-                    <!--</TableRow>-->
-
-                    <!--<TableRow-->
-                        <!--android:id="@+id/peripheral_rssi_row"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_gravity="right"-->
-                            <!--android:layout_weight="0"-->
-                            <!--android:text="RSSI:"/>-->
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/peripheral_rssi_value"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_marginLeft="10dp"-->
-                            <!--android:layout_weight="99"-->
-                            <!--android:textStyle="italic"/>-->
-
-                    <!--</TableRow>-->
-
-                    <TableRow
-                        android:id="@+id/peripheral_address_row"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_weight="0"
-                            android:text="Address:"/>
-
-                        <TextView
-                            android:id="@+id/peripheral_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="99"
-                            android:textStyle="italic" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/peripheral_status_row"
+            <TableLayout
+                android:id="@+id/peripheral_header"
+                android:layout_width="fill_parent"
+                android:layout_height="160dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin">
+                <!--<TableRow-->
+                <!--android:id="@+id/peripheral_name_row"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:layout_weight="0"-->
+                <!--android:text="Peripheral:"/>-->
+                <!--<TextView-->
+                <!--android:id="@+id/peripheral_name"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_weight="99"-->
+                <!--android:textStyle="bold"/>-->
+                <!--</TableRow>-->
+                <!--<TableRow-->
+                <!--android:id="@+id/peripheral_rssi_row"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:layout_weight="0"-->
+                <!--android:text="RSSI:"/>-->
+                <!--<TextView-->
+                <!--android:id="@+id/peripheral_rssi_value"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_weight="99"-->
+                <!--android:textStyle="italic"/>-->
+                <!--</TableRow>-->
+                <TableRow
+                    android:id="@+id/peripheral_address_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content">
-
-                        <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_weight="0"
-                            android:text="Status"/>
-
-                        <TextView
-                            android:id="@+id/peripheral_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="99"
-                            />
-
-                    </TableRow>
-
-                </TableLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="0"
+                        android:text="Address:"/>
+                    <TextView
+                        android:id="@+id/peripheral_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="99"
+                        android:textStyle="italic" />
+                </TableRow>
+                <TableRow
+                    android:id="@+id/peripheral_status_row"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content">
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="0"
+                        android:text="Status"/>
+                    <TextView
+                        android:id="@+id/peripheral_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="99"
+                        />
+                </TableRow>
+            </TableLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/peripheral_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <TextView
@@ -140,14 +119,37 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/toolbar_color"
+                app:layout_collapseMode="pin"
+                app:tabIndicatorColor="@color/tab_indicator"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="#EEE"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/peripheral_detail_recycler_view"
-        android:layout_height="match_parent"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_below="@+id/peripheral_header"
-        android:background="#9E9E9E"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/peripheral_detail_recycler_view"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_below="@+id/peripheral_header"-->
+        <!--android:background="#9E9E9E"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
 
 </android.support.design.widget.CoordinatorLayout>
