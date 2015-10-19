@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.esec.mcg.bleinsight.PeripheralActivity;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
@@ -76,6 +75,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
 
     public void updatePeriodicalyRssi(final boolean repeat) {
         LogUtils.d("repeat = " + repeat);
+        LogUtils.d("repeatEnable = " + repeatEnable);
         repeatEnable = repeat;
         if (repeatEnable == false) {
             startUpdateRssiThread = true;
@@ -167,17 +167,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
         holder.connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                final Intent intent = new Intent(mParent, PeripheralActivity.class);
-//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_NAME, name);
-//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_ADDRESS, address);
-//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_RSSI, rssiString);
-//                intent.putExtra(PeripheralActivity.EXTRAS_DEVICE_BOND, bondStateString);
-//
-//                if (ScanDeviceActivity.mScanning) {
-//                    mParent.mBLEWrapper.stopScanning();
-//                }
-//
-//                mParent.startActivity(intent);
+
                 LogUtils.d(mDevices);
                 LogUtils.d("On Click Connect Button: " + position);
                 LogUtils.d("device name: " + name);

@@ -7,22 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import org.esec.mcg.bleinsight.adapter.DeviceDetailAdapter;
-import org.esec.mcg.bleinsight.adapter.DeviceListAdapter;
 import org.esec.mcg.bleinsight.adapter.ScanDeviceAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
-import org.esec.mcg.utils.logger.LogUtils;
 
 public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallbacks {
     private static final long SCANNING_TIMEOUT = 20 * 1000;  /* 5 seconds */
@@ -92,7 +84,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     protected void onPause() {
         super.onPause();
         stopScanningInit();
-        mBLEWrapper.stopScanning();
+//        mBLEWrapper.stopScanning();
         invalidateOptionsMenu();
     }
 
@@ -113,7 +105,6 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     public void startScanningInit() {
         scanToggle.setText("STOP SCANNING");
         findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
-        DeviceListAdapter.startUpdateRssiThread = true;
         mScanning = true;
         mScanDeviceAdapter.clearList();
         mBLEWrapper.startScanning(SCANNING_TIMEOUT);

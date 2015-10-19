@@ -24,11 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PeripheralActivity"
-            android:label="@string/title_activity_peripheral"
-            android:parentActivityName=".ScanDeviceActivity" >
-        </activity>
-        <activity
             android:name=".PeripheralDetailActivity"
             android:label="@string/title_activity_peripheral_detail" >
         </activity>
