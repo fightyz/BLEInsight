@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import org.esec.mcg.bleinsight.LogViewFragment;
 import org.esec.mcg.bleinsight.PeripheralDetailFragment;
 import org.esec.mcg.utils.logger.LogUtils;
 
@@ -17,8 +18,10 @@ public class PeripheralPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             LogUtils.d("position = " + position);
+            return PeripheralDetailFragment.newInstance(position);
+        } else {
+            return LogViewFragment.newInstance();
         }
-        return PeripheralDetailFragment.newInstance(position);
     }
 
     @Override
@@ -28,6 +31,10 @@ public class PeripheralPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tab " + (position + 1);
+        if (position == 0) {
+            return "Device Detail";
+        } else {
+            return "Log View";
+        }
     }
 }
