@@ -4,25 +4,21 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.CharacteristicItemBean;
+import org.esec.mcg.bleinsight.LogViewFragment;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.WriteValueDialog;
+import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.CommandUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
 
 /**
  * Created by yz on 2015/9/28.
@@ -52,6 +48,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
     private BLEWrapper mBLEWrapper;
     private PeripheralDetailActivity mContext;
 
+    private LogViewRecyclerAdapter mLogViewRecyclerAdapter;
+
     public CharacteristicViewHolder(View itemView) {
         super(itemView);
 
@@ -61,6 +59,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         mContext = (PeripheralDetailActivity)itemView.getContext();
         mBLEWrapper = (BLEWrapper)mContext.getBLEWrapper().clone();
         mBLEWrapper.setCommandUiCallbacks(this);
+
+        mLogViewRecyclerAdapter = LogViewRecyclerAdapter.getInstance(mContext);
 
         characteristicName = (TextView) itemView.findViewById(R.id.characteristic_name);
         characteristicUuidValue = (TextView) itemView.findViewById(R.id.characteristic_uuid_value);
@@ -102,6 +102,8 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                 mContext.getBLEWrapper().self = mBLEWrapper;
 //                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
                 mBLEWrapper.requestCharacteristicValue(characteristic);
+                // 将log打印至LogView界面
+                mLogViewRecyclerAdapter.insertLogItem("read characteristic");
             }
         });
 
