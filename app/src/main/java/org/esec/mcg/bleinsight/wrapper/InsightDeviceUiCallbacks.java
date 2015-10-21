@@ -19,4 +19,5 @@ public interface InsightDeviceUiCallbacks {
                                             final BluetoothDevice device,
                                             final BluetoothGattService service,
                                             final List<BluetoothGattCharacteristic> characteristic);
+    public void uiLogConnectState(final String log);
 }

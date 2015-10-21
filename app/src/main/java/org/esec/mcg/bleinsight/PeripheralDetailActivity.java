@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.esec.mcg.bleinsight.adapter.ExpandableRecyclerAdapter;
+import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralDetailAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralPagerAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
@@ -66,6 +67,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private ProgressDialog mProgressDialog;
 
+    private LogViewRecyclerAdapter mLogViewRecyclerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +88,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
         mDeviceAddressView.setText(mDeviceAddress);
-
-        mCollapsingToolbarLayout.setTitle(mDeviceName);
 
         connectToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,12 +116,16 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mPeripheralDetailAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mLogViewRecyclerAdapter = LogViewRecyclerAdapter.getInstance(this);
     }
 
     @Override
     protected void onResume() {
         LogUtils.d("PAUSE_FLAG = " + PAUSE_FLAG);
         super.onResume();
+
+        mCollapsingToolbarLayout.setTitle(mDeviceName);
 
         if (PAUSE_FLAG) {
             PAUSE_FLAG = false;
@@ -141,6 +146,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
         mDeviceStatusView.setText("connecting...");
         mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "连接中...");
+        mLogViewRecyclerAdapter.insertLogItem("Connecting to " + mDeviceAddress);
         mBLEWrapper.connect(mDeviceAddress);
     }
 
@@ -194,6 +200,9 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
                 mDeviceStatusView.setText("connected");
                 connectToggle.setText("DISCONNECT");
+                mPeripheralDetailAdapter.clearList();
+//                mPeripheralDetailAdapter.setServiceCharacteristicItemGrey(false);
+//                mPeripheralDetailAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -216,7 +225,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
             public void run() {
                 mDeviceStatusView.setText("disconnected");
                 connectToggle.setText("CONNECT");
-                mPeripheralDetailAdapter.setServiceCharacteristicItemGrey();
+                mPeripheralDetailAdapter.setServiceCharacteristicItemGrey(true);
                 mPeripheralDetailAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
@@ -244,31 +253,14 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     }
 
-//    public static class PeripheralDetailFragment extends Fragment {
-//        public static final String ARG_PAGE = "arg_page";
-//
-//        public PeripheralDetailFragment() {
-//
-//        }
-//
-//        public PeripheralDetailFragment newInstance(int pageNumber) {
-//            PeripheralDetailFragment myFragment = new PeripheralDetailFragment();
-//            Bundle arguments = new Bundle();
-//            arguments.putInt(ARG_PAGE, pageNumber + 1);
-//            myFragment.setArguments(arguments);
-//            return myFragment;
-//        }
-//
-//        @Nullable
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//            Bundle arguments = getArguments();
-//            int pageNumber = arguments.getInt(ARG_PAGE);
-//            // TODO 初始化RecyclerView
-//            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.peripheral_detail_recycler_view);
-//            recyclerView.setAdapter(((PeripheralDetailActivity)getActivity()));
-//        }
-//    }
+    /**
+     * 打印log到LogTab
+     * @param log
+     */
+    @Override
+    public void uiLogConnectState(String log) {
+        mLogViewRecyclerAdapter.insertLogItem(log);
+    }
 
     public PeripheralDetailAdapter getPeripheralDetailAdapter() {
         return mPeripheralDetailAdapter;

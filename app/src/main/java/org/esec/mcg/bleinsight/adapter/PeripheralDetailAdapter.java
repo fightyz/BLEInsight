@@ -119,11 +119,11 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         super.setParentItemList(serviceParentList);
     }
 
-    public void setServiceCharacteristicItemGrey() {
+    public void setServiceCharacteristicItemGrey(boolean isGrey) {
         for (ServiceItemBean serviceItemBean : serviceParentList) {
-            serviceItemBean.setConnectState(false);
+            serviceItemBean.setConnectState(!isGrey);
             for (CharacteristicItemBean charactersiticItemBean : serviceItemBean.getChildItemList()) {
-                charactersiticItemBean.setConnectState(false);
+                charactersiticItemBean.setConnectState(!isGrey);
             }
         }
     }

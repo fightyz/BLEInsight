@@ -62,7 +62,7 @@ public class BLEWrapper implements Cloneable {
      * 避免出现页面里同时有两个notify时，notify B将notify A的BLEWrapper给冲刷掉
      *
      */
-    private Map<BluetoothGattCharacteristic, BLEWrapper> charWrapperMap;
+    private Map<UUID, BLEWrapper> charWrapperMap;
 
     public List<BluetoothGattService> getCachedServices() {return mBluetoothGattServices;}
 
@@ -110,6 +110,7 @@ public class BLEWrapper implements Cloneable {
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                LogUtils.d("onCharacteristicRead");
                 getCharacteristicValue(characteristic);
             }
         }
@@ -129,10 +130,11 @@ public class BLEWrapper implements Cloneable {
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            LogUtils.d("onCharacteristicChanged");
 //            self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
 //                    mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
-            if (charWrapperMap.containsKey(characteristic)) {
-                charWrapperMap.get(characteristic).mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
+            if (charWrapperMap.containsKey(characteristic.getUuid())) {
+                charWrapperMap.get(characteristic.getUuid()).mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
                     mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
             }
         }
@@ -146,7 +148,7 @@ public class BLEWrapper implements Cloneable {
     }
 
     public void addCharWrapperElement(BluetoothGattCharacteristic ch, BLEWrapper BleWrapper) {
-        charWrapperMap.put(ch, BleWrapper);
+        charWrapperMap.put(ch.getUuid(), BleWrapper);
     }
 
     /**
@@ -271,13 +273,15 @@ public class BLEWrapper implements Cloneable {
         // 判断是重新连接还是新建连接
         if (mBluetoothGatt != null && mBluetoothGatt.getDevice().getAddress().equals(deviceAddress)) {
             LogUtils.d("reconnect??");
+            mInsightDevcieUiCallbacks.uiLogConnectState("gatt = device.connect()");
             return mBluetoothGatt.connect();
         } else {
             mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mDeviceAddress);
             if (mBluetoothDevice == null) {
                 return false;
             }
-            mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, false, mBleCallback);
+            mInsightDevcieUiCallbacks.uiLogConnectState("gatt = device.connectGatt(autoConnect = false)");
+            mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, true, mBleCallback);
         }
         return true;
     }
@@ -394,11 +398,16 @@ public class BLEWrapper implements Cloneable {
      * @param enabled
      */
     public void setCccdForCharacteristic(BluetoothGattCharacteristic ch, boolean enabled) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) return;
+        LogUtils.d("setCccdForCharacteristic");
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            LogUtils.d("adapter == null || gatt == null");
+            return;
+        }
 
         boolean success = mBluetoothGatt.setCharacteristicNotification(ch, enabled);
         if (!success) {
             //TODO 这里不成功的话要给用户一个callback
+            LogUtils.d("set Notification not success");
         }
 
         int props = ch.getProperties();
@@ -413,6 +422,7 @@ public class BLEWrapper implements Cloneable {
             byte[] val = enabled ? ENABLE_VALUE : BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
             descriptor.setValue(val);
             mBluetoothGatt.writeDescriptor(descriptor);
+            LogUtils.d("writeDescriptor");
         }
     }
 
