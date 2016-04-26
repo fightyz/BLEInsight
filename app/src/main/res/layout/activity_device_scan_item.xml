@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="@dimen/abc_list_item_padding_horizontal_material">
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:id="@+id/cv_item"
+    card_view:cardCornerRadius="4dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_device_name"
-        android:text="device_name"
-        android:textSize="@dimen/abc_text_size_headline_material"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:padding="@dimen/abc_list_item_padding_horizontal_material">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="device_address"
-        android:id="@+id/tv_device_address"
-        android:layout_below="@+id/tv_device_name"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_device_name"
+            android:text="device_name"
+            android:textSize="@dimen/abc_text_size_headline_material"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="bond_state"
-        android:id="@+id/tv_bond_state"
-        android:layout_below="@+id/tv_device_address"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="device_address"
+            android:id="@+id/tv_device_address"
+            android:layout_below="@+id/tv_device_name"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rssi_value"
-        android:id="@+id/tv_rssi_value"
-        android:layout_below="@+id/tv_device_address"
-        android:layout_toEndOf="@+id/tv_device_address" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bond_state"
+            android:id="@+id/tv_bond_state"
+            android:layout_below="@+id/tv_device_address"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        style="@style/Button"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="connect"
-        android:id="@+id/btn_connect"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:focusable="false"/>
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rssi_value"
+            android:id="@+id/tv_rssi_value"
+            android:layout_below="@+id/tv_device_address"
+            android:layout_toEndOf="@+id/tv_device_address" />
+
+        <Button
+            style="@style/Button"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="connect"
+            android:id="@+id/btn_connect"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:focusable="false"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+

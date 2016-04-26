@@ -25,7 +25,7 @@ import org.esec.mcg.utils.logger.LogUtils;
 public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallbacks {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
-    private static final long SCANNING_TIMEOUT = 20 * 1000;  /* 5 seconds */
+    private static final long SCANNING_TIMEOUT = 20 * 1000;  /* 20 seconds */
     private static final int ENABLE_BT_REQUEST_ID = 1;
 
     public BLEWrapper mBLEWrapper;
