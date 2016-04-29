@@ -74,8 +74,8 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
     }
 
     public void updatePeriodicalyRssi(final boolean repeat) {
-        LogUtils.d("repeat = " + repeat);
-        LogUtils.d("repeatEnable = " + repeatEnable);
+//        LogUtils.d("repeat = " + repeat);
+//        LogUtils.d("repeatEnable = " + repeatEnable);
         repeatEnable = repeat;
         if (repeatEnable == false) {
             startUpdateRssiThread = true;
@@ -93,7 +93,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
                         mRssis.set(i, rssiQueue.remove()); /* 更新adapter中rssi值列表 */
                     }
                 } // 设备列表遍历完成
-                LogUtils.d("notifyDataSetChanged???");
+//                LogUtils.d("notifyDataSetChanged???");
                 notifyDataSetChanged(); /* rssi值列表有更新，通知界面刷新 */
                 updatePeriodicalyRssi(repeatEnable);
             }
@@ -130,9 +130,9 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
         final String rssiString;
         final String bondStateString;
 
-        LogUtils.d("onBindViewHolder: " + position);
+//        LogUtils.d("onBindViewHolder: " + position);
         BluetoothDevice device = mDevices.get(position);
-        LogUtils.d(mDevices);
+//        LogUtils.d(mDevices);
 
         String tmpName = device.getName();
         if (tmpName == null || tmpName.length() <= 0) name = "Unknown Device";
@@ -168,10 +168,10 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
             @Override
             public void onClick(View v) {
 
-                LogUtils.d(mDevices);
-                LogUtils.d("On Click Connect Button: " + position);
-                LogUtils.d("device name: " + name);
-                LogUtils.d("device address: " + address);
+//                LogUtils.d(mDevices);
+//                LogUtils.d("On Click Connect Button: " + position);
+//                LogUtils.d("device name: " + name);
+//                LogUtils.d("device address: " + address);
                 final Intent intent = new Intent(mParent, PeripheralDetailActivity.class);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_NAME, name);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_ADDRESS, address);

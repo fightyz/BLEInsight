@@ -17,7 +17,6 @@ public class PeripheralPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            LogUtils.d("position = " + position);
             return PeripheralDetailFragment.newInstance(position);
         } else {
             return LogViewFragment.newInstance();

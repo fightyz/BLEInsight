@@ -11,6 +11,7 @@ import org.esec.mcg.bleinsight.viewholder.ParentViewHolder;
 import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 //        mParentItemList = parentItemList;
 //        mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
 //        mAttachedRecyclerViewPool = new ArrayList<>();
-        mItemList = new ArrayList<>();
+        mItemList = new LinkedList<>();
     }
 
     public void setParentItemList(List<? extends ParentListItem> parentItemList) {
@@ -169,6 +170,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param expansionTriggeredByListItemClick
      */
     private void expandParentListItem(ParentWrapper parentWrapper, int parentIndex, boolean expansionTriggeredByListItemClick) {
+        LogUtils.d("parentIndex = " + parentIndex);
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
 
@@ -184,7 +186,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 for (int i = 0; i < childListItemCount; i++) {
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
                     notifyItemInserted(parentIndex + i + 1);
-                    LogUtils.d("notifyItemInserted: " + parentIndex + i + 1);
+                    LogUtils.d("notifyItemInserted: " + (parentIndex + i + 1));
                 }
             }
         }
@@ -216,6 +218,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     @Override
     public int getItemViewType(int position) {
+//        LogUtils.d("getItemViewTyp: position = " + position);
         Object listItem = getListItem(position);
         if (listItem instanceof ParentWrapper) {
             return TYPE_PARENT;

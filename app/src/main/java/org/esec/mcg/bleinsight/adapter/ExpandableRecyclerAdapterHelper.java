@@ -4,6 +4,7 @@ import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.model.ParentWrapper;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class ExpandableRecyclerAdapterHelper {
 
     public static List<Object> generateParentChildItemList(List<? extends ParentListItem> parentItemList) {
-        List<Object> parentWrapperList = new ArrayList<>();
+        List<Object> parentWrapperList = new LinkedList<>();
         ParentListItem parentListItem;
         ParentWrapper parentWrapper;
 

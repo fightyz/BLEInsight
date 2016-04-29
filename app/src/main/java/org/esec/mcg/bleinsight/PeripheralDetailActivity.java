@@ -122,7 +122,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        LogUtils.d("PAUSE_FLAG = " + PAUSE_FLAG);
+//        LogUtils.d("PAUSE_FLAG = " + PAUSE_FLAG);
         super.onResume();
 
         mCollapsingToolbarLayout.setTitle(mDeviceName);
@@ -201,8 +201,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
                 mDeviceStatusView.setText("connected");
                 connectToggle.setText("DISCONNECT");
                 mPeripheralDetailAdapter.clearList();
-//                mPeripheralDetailAdapter.setServiceCharacteristicItemGrey(false);
-//                mPeripheralDetailAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -250,6 +248,22 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     @Override
     public void uiCharacteristicsForService(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, List<BluetoothGattCharacteristic> characteristic) {
+
+    }
+
+    public void uiCharacteristicChanged(final BluetoothGattCharacteristic characteristic) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int position = mPeripheralDetailAdapter.updateCharacteristicForUuid(characteristic);
+//                mPeripheralDetailAdapter.notifyDataSetChanged();
+                mPeripheralDetailAdapter.notifyItemChanged(position);
+            }
+        });
+    }
+
+    @Override
+    public void uiCharacteristicReaded(BluetoothGattCharacteristic characteristic) {
 
     }
 

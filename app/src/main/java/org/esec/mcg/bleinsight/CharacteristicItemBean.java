@@ -2,6 +2,8 @@ package org.esec.mcg.bleinsight;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 
+import org.esec.mcg.bleinsight.viewholder.CharacteristicViewHolder;
+
 /**
  * Created by yz on 2015/9/28.
  */

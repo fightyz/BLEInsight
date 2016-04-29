@@ -11,13 +11,17 @@ import java.util.List;
  * Created by yz on 2015/9/22.
  */
 public interface InsightDeviceUiCallbacks {
-    public void uiDeviceConnected(final BluetoothGatt gatt, final BluetoothDevice device);
-    public void uiNewRssiAvailable(final BluetoothGatt gatt, final BluetoothDevice device, final int rssi);
-    public void uiDeviceDisconnected(final BluetoothGatt gatt, final BluetoothDevice device);
-    public void uiAvailableServices(final BluetoothGatt gatt, final BluetoothDevice device, final List<BluetoothGattService> services);
-    public void uiCharacteristicsForService(final BluetoothGatt gatt,
+    void uiDeviceConnected(final BluetoothGatt gatt, final BluetoothDevice device);
+    void uiNewRssiAvailable(final BluetoothGatt gatt, final BluetoothDevice device, final int rssi);
+    void uiDeviceDisconnected(final BluetoothGatt gatt, final BluetoothDevice device);
+    void uiAvailableServices(final BluetoothGatt gatt, final BluetoothDevice device, final List<BluetoothGattService> services);
+    void uiCharacteristicsForService(final BluetoothGatt gatt,
                                             final BluetoothDevice device,
                                             final BluetoothGattService service,
                                             final List<BluetoothGattCharacteristic> characteristic);
-    public void uiLogConnectState(final String log);
+    void uiLogConnectState(final String log);
+
+    void uiCharacteristicChanged(BluetoothGattCharacteristic characteristic);
+
+    void uiCharacteristicReaded(BluetoothGattCharacteristic characteristic);
 }

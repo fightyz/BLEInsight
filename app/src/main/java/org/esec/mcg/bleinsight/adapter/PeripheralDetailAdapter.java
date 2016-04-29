@@ -15,6 +15,8 @@ import org.esec.mcg.bleinsight.viewholder.CharacteristicViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ServiceViewHolder;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
+import org.esec.mcg.utils.ByteUtil;
+import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,6 +117,22 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         }
     }
 
+    public int updateCharacteristicForUuid(BluetoothGattCharacteristic characteristic) {
+        int position = -1;
+        for (Object item :
+                mItemList) {
+            position++;
+            if (item instanceof CharacteristicItemBean) {
+                CharacteristicItemBean characteristicItemBean = (CharacteristicItemBean)item;
+                if (characteristic.getUuid().toString().equals(characteristicItemBean.getCharacteristicUuid())) {
+                    characteristicItemBean.setCharacteristicValue(ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+                    return position;
+                }
+            }
+        }
+        return -1;
+    }
+
     public void setParentItemList() {
         super.setParentItemList(serviceParentList);
     }
@@ -130,12 +148,14 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 
     @Override
     public ServiceViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
+        LogUtils.d("onCreateParentViewHolder");
         View view = mInflater.inflate(R.layout.service_item, parentViewGroup, false);
         return new ServiceViewHolder(view);
     }
 
     @Override
     public CharacteristicViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
+        LogUtils.d("onCreateChildViewHolder");
         View view = mInflater.inflate(R.layout.characteristic_item, childViewGroup, false);
         return new CharacteristicViewHolder(view);
     }
@@ -143,12 +163,14 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
 
     @Override
     public void onBindParentViewHolder(ServiceViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+        LogUtils.d("onBindParentViewHolder");
         ServiceItemBean serviceItemBean = (ServiceItemBean) parentListItem;
         parentViewHolder.bind(serviceItemBean);
     }
 
     @Override
     public void onBindChildViewHolder(CharacteristicViewHolder childViewHolder, int position, Object childListItem) {
+        LogUtils.d("onBindChildViewHolder");
         CharacteristicItemBean childItem = (CharacteristicItemBean) childListItem;
         childViewHolder.bind(childItem);
     }

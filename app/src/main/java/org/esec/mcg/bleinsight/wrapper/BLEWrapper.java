@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * Created by yz on 2015/9/9.
  */
-public class BLEWrapper implements Cloneable {
+public class BLEWrapper {
     private static final long SCANNING_TIMEOUT = 5 * 1000;
     private static final int RSSI_UPDATE_TIME_INTERVAL = 1500; // 1.5 seconds
 
@@ -55,7 +55,7 @@ public class BLEWrapper implements Cloneable {
     private Handler mTimerHandler = new Handler();
     private boolean mTimerEnabled = false;
 
-    public BLEWrapper self;
+//    public BLEWrapper self;
 
     /**
      * 设置characteristic - BLEWrapper的Map
@@ -77,7 +77,7 @@ public class BLEWrapper implements Cloneable {
     private final BluetoothGattCallback mBleCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            LogUtils.d("Connect??");
+//            LogUtils.d("Connect??");
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 mConnected = true;
                 mInsightDevcieUiCallbacks.uiDeviceConnected(mBluetoothGatt, mBluetoothDevice);
@@ -87,7 +87,7 @@ public class BLEWrapper implements Cloneable {
 //                startMonitoringRssiValue();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                LogUtils.d("DISCONNECT!!!");
+//                LogUtils.d("DISCONNECT!!!");
                 mConnected = false;
                 mInsightDevcieUiCallbacks.uiDeviceDisconnected(mBluetoothGatt, mBluetoothDevice);
             }
@@ -118,37 +118,20 @@ public class BLEWrapper implements Cloneable {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                LogUtils.d("write response success");
-                LogUtils.d(ByteUtil.ByteArrayToHexString(characteristic.getValue()));
-                if (self.mCommandUiCallbacks == null) {
-                    LogUtils.d("mCommanduiCallbacks is null");
-                }
-                self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
-                        mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
+                mInsightDevcieUiCallbacks.uiCharacteristicChanged(characteristic);
             }
         }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            LogUtils.d("onCharacteristicChanged");
-//            self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
-//                    mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
-            if (charWrapperMap.containsKey(characteristic.getUuid())) {
-                charWrapperMap.get(characteristic.getUuid()).mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice,
-                    mBluetoothSelectedService, characteristic, ByteUtil.ByteArrayToHexString(characteristic.getValue()));
-            }
+            LogUtils.d("uuid: " + characteristic.getUuid().toString());
+            mInsightDevcieUiCallbacks.uiCharacteristicChanged(characteristic);
         }
     };
 
     public BLEWrapper(Context context) {
-        LogUtils.d("BLEWrapper constructor!!!");
         this.mContext = context;
-        self = this;
         charWrapperMap = new HashMap<>();
-    }
-
-    public void addCharWrapperElement(BluetoothGattCharacteristic ch, BLEWrapper BleWrapper) {
-        charWrapperMap.put(ch.getUuid(), BleWrapper);
     }
 
     /**
@@ -247,9 +230,6 @@ public class BLEWrapper implements Cloneable {
             }
         };
         mHandler.postDelayed(timeout, scanningTimeout);
-//        mBluetoothLeScanner.startScan(null,
-//                new ScanSettings.Builder().setReportDelay(100).build(),
-//                mScanCallback);
         mBluetoothLeScanner.startScan(mScanCallback);
     }
 
@@ -435,12 +415,7 @@ public class BLEWrapper implements Cloneable {
         if (rawValue.length > 0) {
             strValue = ByteUtil.ByteArrayToHexString(rawValue);
         }
-        if (self.mCommandUiCallbacks == null) {
-            LogUtils.d("mCommandUiCallbacks is null");
-            LogUtils.d(this);
-            Log.d("yz",this.toString());
-        }
-        self.mCommandUiCallbacks.uiNewValueForCharacteristic(mBluetoothGatt, mBluetoothDevice, mBluetoothSelectedService, characteristic, strValue);
+        mInsightDevcieUiCallbacks.uiCharacteristicChanged(characteristic);
     }
 
     @Override

@@ -23,7 +23,7 @@ import org.esec.mcg.utils.logger.LogUtils;
 /**
  * Created by yz on 2015/9/28.
  */
-public class CharacteristicViewHolder extends ChildViewHolder implements CommandUiCallbacks {
+public class CharacteristicViewHolder extends ChildViewHolder {
 
     public TextView characteristicName;
     public TextView characteristicUuidValue;
@@ -57,8 +57,9 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
          * 每一个ViewHolder持有自己的BLEWrapper
          */
         mContext = (PeripheralDetailActivity)itemView.getContext();
-        mBLEWrapper = (BLEWrapper)mContext.getBLEWrapper().clone();
-        mBLEWrapper.setCommandUiCallbacks(this);
+//        mBLEWrapper = (BLEWrapper)mContext.getBLEWrapper().clone();
+//        mBLEWrapper.setCommandUiCallbacks(this);
+        mBLEWrapper = mContext.getBLEWrapper();
 
         mLogViewRecyclerAdapter = LogViewRecyclerAdapter.getInstance(mContext);
 
@@ -78,10 +79,10 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                 if (characteristicItemBean != null) {
                     characteristicItemBean.setSwitchState(isChecked);
                 }
-                mContext.getBLEWrapper().self = mBLEWrapper;
+//                mContext.getBLEWrapper().self = mBLEWrapper;
                 // 因为当页面中同时出现两个notify的时候，后出现的notify B也会调用上面的方法设置self，从而将notify A
                 // 所持有的BLEWrapper给冲刷掉，因此需要维护一个map，使程序知道回调时是哪个characteristic的值
-                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
+//                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
                 // 根据是notify还是indicate向cccd写入不同的值
                 // 开启cccd
                 mBLEWrapper.setCccdForCharacteristic(characteristicItemBean.getCharacteristic(), isChecked);
@@ -98,9 +99,9 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
                 LogUtils.d(characteristicItemBean.getCharacteristicName());
                 /**
                  * 让context中持有该ViewHolder的BLEWrapper实例
-                 */
-                mContext.getBLEWrapper().self = mBLEWrapper;
-//                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
+//                 */
+//                mContext.getBLEWrapper().self = mBLEWrapper;
+////                mContext.getBLEWrapper().addCharWrapperElement(characteristicItemBean.getCharacteristic(), mBLEWrapper);
                 mBLEWrapper.requestCharacteristicValue(characteristic);
                 // 将log打印至LogView界面
                 mLogViewRecyclerAdapter.insertLogItem("read characteristic");
@@ -113,7 +114,7 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
             public void onClick(View v) {
 //                new AlertDialog.Builder(mContext).setView(new EditText(mContext)).setTitle("Write Value")
 //                        .setPositiveButton("确定", null).setNegativeButton("取消", null).show();
-                mContext.getBLEWrapper().self = mBLEWrapper;
+//                mContext.getBLEWrapper().self = mBLEWrapper;
                 WriteValueDialog writeValueDialog = new WriteValueDialog(mContext, mBLEWrapper, characteristicItemBean);
                 writeValueDialog.show();
 //                new AlertDialog.Builder(mContext).setView(R.layout.write_value_dialog).setTitle("Write Value")
@@ -124,11 +125,10 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
 
 
 
-        LogUtils.d("mBLEWrapper addr: " + mBLEWrapper);
-        LogUtils.d("origin BLEWrapper: " + mContext.getBLEWrapper());
     }
 
     public void bind(CharacteristicItemBean characteristicItemBean) {
+        LogUtils.d("CharacteristicViewHolder.bind");
         characteristicName.setText(characteristicItemBean.getCharacteristicName());
 
         characteristicUuidValue.setText(characteristicItemBean.getCharacteristicUuid());
@@ -189,24 +189,4 @@ public class CharacteristicViewHolder extends ChildViewHolder implements Command
         }
     }
 
-    @Override
-    public void uiNewValueForCharacteristic(BluetoothGatt gatt, BluetoothDevice device, BluetoothGattService service, final BluetoothGattCharacteristic ch, final String strValue) {
-//        LogUtils.d("read characteristic callback");
-        mContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (ch.getUuid().compareTo(characteristicItemBean.getCharacteristic().getUuid()) == 0) {
-                    characteristicItemBean.setCharacteristicValue(strValue);
-                    characteristicValueText.setVisibility(View.VISIBLE);
-                    characteristicValue.setVisibility(View.VISIBLE);
-                    characteristicValue.setText(strValue);
-                }
-            }
-        });
-        /**
-         * TODO 其实这里应该用notifyDataChanged之类的？这样能够避免read时间过长没有返回，用户已经移动了列表
-         * 导致characteristicPropertiesValue已经对应到另一个位置了？
-         */
-
-    }
 }
