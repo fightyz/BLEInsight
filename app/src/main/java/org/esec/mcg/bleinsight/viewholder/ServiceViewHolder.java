@@ -1,5 +1,6 @@
 package org.esec.mcg.bleinsight.viewholder;
 
+import android.content.Context;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -23,7 +24,6 @@ public class ServiceViewHolder extends ParentViewHolder {
     public TextView mServiceNameTextView;
     public TextView mServiceUuidTextView;
     public TextView mServiceTypeTextView;
-    public PeripheralDetailActivity mContext;
 
     public ServiceViewHolder(View itemView) {
         super(itemView);
@@ -31,17 +31,16 @@ public class ServiceViewHolder extends ParentViewHolder {
         mServiceNameTextView = (TextView) itemView.findViewById(R.id.service_name);
         mServiceUuidTextView = (TextView) itemView.findViewById(R.id.service_uuid);
         mServiceTypeTextView = (TextView) itemView.findViewById(R.id.service_type);
-        mContext = (PeripheralDetailActivity)itemView.getContext();
     }
 
-    public void bind(ServiceItemBean serviceItemBean) {
+    public void bind(ServiceItemBean serviceItemBean, Context context) {
         LogUtils.d("ServiceItemHolder.bind");
         mServiceNameTextView.setText(serviceItemBean.getServiceName());
         if (!serviceItemBean.getConnectState()) {
             //TODO 这里方法过时，要换成colorStateList作参数
-            mServiceNameTextView.setTextColor(mContext.getResources().getColor(R.color.grey));
+            mServiceNameTextView.setTextColor(context.getResources().getColor(R.color.grey));
         } else {
-            mServiceNameTextView.setTextColor(mContext.getResources().getColor(R.color.black));
+            mServiceNameTextView.setTextColor(context.getResources().getColor(R.color.black));
         }
         mServiceUuidTextView.setText(serviceItemBean.getServiceUuid());
         mServiceTypeTextView.setText(serviceItemBean.getServiceType());

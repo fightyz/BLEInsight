@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.esec.mcg.bleinsight.CharacteristicItemBean;
+import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ServiceItemBean;
 import org.esec.mcg.bleinsight.model.ParentListItem;
@@ -32,7 +33,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     private ArrayList<List<BluetoothGattCharacteristic>> mCharacteristics;
     private List<ServiceItemBean> serviceParentList; // 用于recyclerView的显示
     private LayoutInflater mInflater;
-    private Context mContext;
+    private PeripheralDetailActivity mContext;
 
 //    private BLEWrapper mBLEWrapper;
 
@@ -42,7 +43,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
         mCharacteristics = new ArrayList<>();
         serviceParentList = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
-        mContext = context;
+        mContext = (PeripheralDetailActivity)context;
     }
 
     public void clearList() {
@@ -157,7 +158,7 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     public CharacteristicViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
         LogUtils.d("onCreateChildViewHolder");
         View view = mInflater.inflate(R.layout.characteristic_item, childViewGroup, false);
-        return new CharacteristicViewHolder(view);
+        return new CharacteristicViewHolder(view, mContext);
     }
 
 
@@ -165,13 +166,13 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
     public void onBindParentViewHolder(ServiceViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
         LogUtils.d("onBindParentViewHolder");
         ServiceItemBean serviceItemBean = (ServiceItemBean) parentListItem;
-        parentViewHolder.bind(serviceItemBean);
+        parentViewHolder.bind(serviceItemBean, mContext);
     }
 
     @Override
     public void onBindChildViewHolder(CharacteristicViewHolder childViewHolder, int position, Object childListItem) {
         LogUtils.d("onBindChildViewHolder");
         CharacteristicItemBean childItem = (CharacteristicItemBean) childListItem;
-        childViewHolder.bind(childItem);
+        childViewHolder.bind(childItem, mContext);
     }
 }
