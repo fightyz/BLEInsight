@@ -1,9 +1,6 @@
 package org.esec.mcg.bleinsight.viewholder;
 
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +8,12 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.esec.mcg.bleinsight.CharacteristicItemBean;
-import org.esec.mcg.bleinsight.LogViewFragment;
+import org.esec.mcg.bleinsight.model.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.WriteValueDialog;
 import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
-import org.esec.mcg.bleinsight.wrapper.CommandUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
 
 /**

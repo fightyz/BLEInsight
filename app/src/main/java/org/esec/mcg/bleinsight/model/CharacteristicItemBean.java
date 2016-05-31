@@ -1,4 +1,4 @@
-package org.esec.mcg.bleinsight;
+package org.esec.mcg.bleinsight.model;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 

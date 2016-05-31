@@ -2,13 +2,10 @@ package org.esec.mcg.bleinsight.viewholder;
 
 import android.content.Context;
 import android.view.View;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
-import org.esec.mcg.bleinsight.ServiceItemBean;
+import org.esec.mcg.bleinsight.model.ServiceItemBean;
 import org.esec.mcg.utils.logger.LogUtils;
 
 /**

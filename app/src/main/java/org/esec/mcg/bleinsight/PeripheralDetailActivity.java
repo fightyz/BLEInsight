@@ -27,6 +27,7 @@ import org.esec.mcg.bleinsight.adapter.ExpandableRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralDetailAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralPagerAdapter;
+import org.esec.mcg.bleinsight.itemanimator.SlideInLeftItemAnimator;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;
@@ -51,7 +52,6 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     private BLEWrapper mBLEWrapper;
 
-    private TextView mDeviceNameView;
     private TextView mDeviceAddressView;
     private TextView mDeviceStatusView;
     private TextView connectToggle;
@@ -116,6 +116,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mPeripheralDetailAdapter);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//        mRecyclerView.setItemAnimator(new SlideInLeftItemAnimator(mRecyclerView));
 
         mLogViewRecyclerAdapter = LogViewRecyclerAdapter.getInstance(this);
     }
@@ -235,8 +237,10 @@ public class PeripheralDetailActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for (BluetoothGattService service : services) {
+                for (int i = 0; i < services.size(); i++) {
+                    BluetoothGattService service = services.get(i);
                     mPeripheralDetailAdapter.addService(service);
+//                    mPeripheralDetailAdapter.notifyItemInserted(i);
                 }
 
                 mPeripheralDetailAdapter.setParentItemList();

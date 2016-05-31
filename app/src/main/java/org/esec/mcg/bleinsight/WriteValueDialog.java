@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.esec.mcg.bleinsight.model.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.utils.ByteUtil;
 import org.esec.mcg.utils.StringUtil;

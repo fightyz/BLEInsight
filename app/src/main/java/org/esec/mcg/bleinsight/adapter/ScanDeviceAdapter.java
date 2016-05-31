@@ -56,6 +56,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
             mDevices.add(device);
             mRecords.add(record);
             mRssis.add(rssi);
+            notifyItemInserted(mDevices.size() - 1);
 
             Queue rssiQueue = new LinkedList<Integer>(); /* 新建rssi值队列 */
             rssiQueue.offer(rssi);
@@ -167,11 +168,6 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
         holder.connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                LogUtils.d(mDevices);
-//                LogUtils.d("On Click Connect Button: " + position);
-//                LogUtils.d("device name: " + name);
-//                LogUtils.d("device address: " + address);
                 final Intent intent = new Intent(mParent, PeripheralDetailActivity.class);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_NAME, name);
                 intent.putExtra(PeripheralDetailActivity.EXTRAS_DEVICE_ADDRESS, address);

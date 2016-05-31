@@ -7,20 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.esec.mcg.bleinsight.CharacteristicItemBean;
+import org.esec.mcg.bleinsight.model.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
-import org.esec.mcg.bleinsight.ServiceItemBean;
+import org.esec.mcg.bleinsight.model.ServiceItemBean;
 import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.viewholder.CharacteristicViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ServiceViewHolder;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
-import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.utils.ByteUtil;
 import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,7 +55,6 @@ public class PeripheralDetailAdapter extends ExpandableRecyclerAdapter<ServiceVi
      * @param service
      */
     public void addService(BluetoothGattService service) {
-        int characteristicId = 0;
         List<CharacteristicItemBean> characteristicChildList = new ArrayList<>();
         if (mBTService.contains(service) == false) {
             mBTService.add(service);

@@ -1,5 +1,6 @@
-package org.esec.mcg.bleinsight;
+package org.esec.mcg.bleinsight.model;
 
+import org.esec.mcg.bleinsight.model.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.model.ParentListItem;
 
 import java.util.List;
