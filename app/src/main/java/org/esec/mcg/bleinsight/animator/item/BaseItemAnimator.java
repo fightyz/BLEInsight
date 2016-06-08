@@ -1,4 +1,4 @@
-package org.esec.mcg.bleinsight.itemanimator;
+package org.esec.mcg.bleinsight.animator.item;
 
 import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.view.ViewCompat;
@@ -6,7 +6,10 @@ import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.View;
+
+import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +87,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     @Override
     public void runPendingAnimations() {
+        LogUtils.d("runPendingAnimations");
         boolean additionsPending = !mPendingAdditions.isEmpty();
         if (!additionsPending) {
             // nothing to animate
@@ -117,6 +121,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     @Override
     public boolean animateAdd(final RecyclerView.ViewHolder holder) {
+        LogUtils.d("animateAdd");
         resetAnimation(holder);
         prepareAnimateAdd(holder);
         ViewCompat.setAlpha(holder.itemView, 0);

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.esec.mcg.bleinsight.adapter.ScanDeviceAdapter;
-import org.esec.mcg.bleinsight.itemanimator.SlideInLeftItemAnimator;
+import org.esec.mcg.bleinsight.animator.item.SlideInLeftItemAnimator;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
 import org.esec.mcg.utils.logger.LogUtils;

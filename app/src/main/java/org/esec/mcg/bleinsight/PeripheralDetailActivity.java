@@ -8,18 +8,15 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +24,9 @@ import org.esec.mcg.bleinsight.adapter.ExpandableRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralDetailAdapter;
 import org.esec.mcg.bleinsight.adapter.PeripheralPagerAdapter;
-import org.esec.mcg.bleinsight.itemanimator.SlideInLeftItemAnimator;
+import org.esec.mcg.bleinsight.animator.loading.CustomProgressDialog;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
-import org.esec.mcg.utils.logger.LogUtils;
 
 import java.util.List;
 
@@ -65,7 +61,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    private ProgressDialog mProgressDialog;
+    private CustomProgressDialog mCustomProgressDialog = null;
 
     private LogViewRecyclerAdapter mLogViewRecyclerAdapter;
 
@@ -76,6 +72,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
         connectViewsVariables();
         setSupportActionBar(mToolbar);
+
+        mCustomProgressDialog = CustomProgressDialog.createDialog(this);
 
         mPeripheralPagerAdapter = new PeripheralPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPeripheralPagerAdapter);
@@ -89,15 +87,18 @@ public class PeripheralDetailActivity extends AppCompatActivity
         mDeviceRSSI = intent.getStringExtra(EXTRAS_DEVICE_RSSI);
         mDeviceAddressView.setText(mDeviceAddress);
 
+
         connectToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView tv = (TextView) v;
                 if (tv.getText().equals("DISCONNECT")) {
-                    mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "断连中...");
+                    mCustomProgressDialog.setDeviceName(mDeviceName);
+                    mCustomProgressDialog.show();
                     mBLEWrapper.disconnect();
                 } else if (tv.getText().equals("CONNECT")) {
-                    mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "连接中...");
+                    mCustomProgressDialog.setDeviceName(mDeviceName);
+                    mCustomProgressDialog.show();
                     mPeripheralDetailAdapter.clearList();
                     mBLEWrapper.connect(mDeviceAddress);
                 }
@@ -147,7 +148,8 @@ public class PeripheralDetailActivity extends AppCompatActivity
             mPeripheralDetailAdapter = new PeripheralDetailAdapter(this);
 
         mDeviceStatusView.setText("connecting...");
-        mProgressDialog = ProgressDialog.show(PeripheralDetailActivity.this, mDeviceName, "连接中...");
+        mCustomProgressDialog.setDeviceName(mDeviceName);
+        mCustomProgressDialog.show();
         mLogViewRecyclerAdapter.insertLogItem("Connecting to " + mDeviceAddress);
         mBLEWrapper.connect(mDeviceAddress);
     }
@@ -163,6 +165,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        Log.e("PeripheralDeta", "onDestroy()");
         super.onDestroy();
         mPeripheralDetailAdapter.clearList();
         mBLEWrapper.disconnectWithoutCallback();
@@ -227,7 +230,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
                 connectToggle.setText("CONNECT");
                 mPeripheralDetailAdapter.setServiceCharacteristicItemGrey(true);
                 mPeripheralDetailAdapter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
+                mCustomProgressDialog.dismiss();
             }
         });
     }
@@ -245,7 +248,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
 
                 mPeripheralDetailAdapter.setParentItemList();
                 mPeripheralDetailAdapter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
+                mCustomProgressDialog.dismiss();
             }
         });
     }
@@ -270,6 +273,13 @@ public class PeripheralDetailActivity extends AppCompatActivity
     public void uiCharacteristicReaded(BluetoothGattCharacteristic characteristic) {
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        mCustomProgressDialog.dismiss();
+//        finish();
+//    }
 
     /**
      * 打印log到LogTab

@@ -1,4 +1,4 @@
-package org.esec.mcg.bleinsight.itemanimator;
+package org.esec.mcg.bleinsight.animator.item;
 
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
