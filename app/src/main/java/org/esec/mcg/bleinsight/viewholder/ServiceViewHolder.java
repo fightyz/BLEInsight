@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.model.ServiceItemBean;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.logger.LogUtils;
 
 /**
  * Created by yz on 2015/9/28.

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.esec.mcg.bleinsight.LogViewFragment;
 import org.esec.mcg.bleinsight.PeripheralDetailFragment;
-import org.esec.mcg.utils.logger.LogUtils;
 
 /**
  * Created by yz on 2015/10/19.

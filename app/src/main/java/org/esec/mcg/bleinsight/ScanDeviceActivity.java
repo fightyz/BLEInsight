@@ -21,7 +21,8 @@ import org.esec.mcg.bleinsight.adapter.ScanDeviceAdapter;
 import org.esec.mcg.bleinsight.animator.item.SlideInLeftItemAnimator;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
-import org.esec.mcg.utils.logger.LogUtils;
+
+import org.esec.mcg.library.logger.LogUtils;
 
 public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallbacks {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -174,6 +175,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         switch(requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    LogUtils.d("coarse location permission granted");
                     LogUtils.d("coarse location permission granted");
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);

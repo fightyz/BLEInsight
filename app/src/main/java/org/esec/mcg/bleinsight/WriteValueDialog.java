@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.model.CharacteristicItemBean;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
-import org.esec.mcg.utils.ByteUtil;
-import org.esec.mcg.utils.StringUtil;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.ByteUtil;
+import org.esec.mcg.library.StringUtil;
+import org.esec.mcg.library.logger.LogUtils;
 
 /**
  * Created by yz on 2015/10/8.

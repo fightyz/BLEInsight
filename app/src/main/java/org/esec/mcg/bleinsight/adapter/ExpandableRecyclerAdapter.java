@@ -8,7 +8,7 @@ import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.model.ParentWrapper;
 import org.esec.mcg.bleinsight.viewholder.ChildViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ParentViewHolder;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

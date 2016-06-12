@@ -9,7 +9,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;

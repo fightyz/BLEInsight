@@ -7,7 +7,6 @@ import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

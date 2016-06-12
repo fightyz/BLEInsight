@@ -14,7 +14,7 @@ import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.WriteValueDialog;
 import org.esec.mcg.bleinsight.adapter.LogViewRecyclerAdapter;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.logger.LogUtils;
 
 /**
  * Created by yz on 2015/9/28.

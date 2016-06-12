@@ -16,10 +16,9 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.util.Log;
 
-import org.esec.mcg.utils.ByteUtil;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.ByteUtil;
+import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.HashMap;
 import java.util.List;

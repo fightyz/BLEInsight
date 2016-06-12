@@ -15,8 +15,8 @@ import org.esec.mcg.bleinsight.model.ParentListItem;
 import org.esec.mcg.bleinsight.viewholder.CharacteristicViewHolder;
 import org.esec.mcg.bleinsight.viewholder.ServiceViewHolder;
 import org.esec.mcg.bleinsight.wrapper.BLENameResolver;
-import org.esec.mcg.utils.ByteUtil;
-import org.esec.mcg.utils.logger.LogUtils;
+import org.esec.mcg.library.ByteUtil;
+import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
