@@ -51,6 +51,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mScanDeviceAdapter);
         mRecyclerView.setItemAnimator(new SlideInLeftItemAnimator(mRecyclerView));
+        mRecyclerView.setHasFixedSize(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("BLEInsight");
