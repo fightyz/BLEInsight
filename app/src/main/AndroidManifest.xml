@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name=".PeripheralDetailActivity"
-            android:label="@string/title_activity_peripheral_detail" >
+            android:label="@string/title_activity_peripheral_detail"
+            android:theme="@style/BlankTheme">
         </activity>
     </application>
 

@@ -30,7 +30,7 @@ import org.esec.mcg.bleinsight.wrapper.InsightDeviceUiCallbacks;
 
 import java.util.List;
 
-public class PeripheralDetailActivity extends AppCompatActivity
+public class PeripheralDetailActivity extends SwipeActivity
         implements ExpandableRecyclerAdapter.ExpandCollapseListener, InsightDeviceUiCallbacks {
 
     public static final String EXTRAS_DEVICE_NAME = "BLE_DEVICE_NAME";
@@ -69,6 +69,7 @@ public class PeripheralDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_peripheral_detail);
+        setSwipeAnyWhere(false);
 
         connectViewsVariables();
         setSupportActionBar(mToolbar);

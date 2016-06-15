@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -114,6 +115,12 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         stopScanningInit();
 //        mBLEWrapper.stopScanning();
         invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LogUtils.e("onDestroy");
+        super.onDestroy();
     }
 
     @Override
