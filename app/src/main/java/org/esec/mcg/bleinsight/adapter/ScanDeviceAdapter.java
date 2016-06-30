@@ -11,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.esec.mcg.bleinsight.PeripheralDetailActivity;
 import org.esec.mcg.bleinsight.R;
 import org.esec.mcg.bleinsight.ScanDeviceActivity;
+import org.esec.mcg.bleinsight.animator.item.ItemSlideHelper;
 import org.esec.mcg.library.logger.LogUtils;
 
 import java.util.ArrayList;
@@ -25,7 +27,11 @@ import java.util.Queue;
 /**
  * Created by yangzhou on 9/26/15.
  */
-public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.ListItemViewHolder> {
+public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.ListItemViewHolder>
+implements ItemSlideHelper.Callback {
+
+    private RecyclerView mRecyclerView;
+    private ItemSlideHelper mOnItemTouchListener;
 
     private ArrayList<BluetoothDevice> mDevices;
     private ArrayList<ScanRecord> mRecords;
@@ -106,6 +112,7 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
         mRecords.clear();
         mRssis.clear();
         mRssiList.clear();
+        mOnItemTouchListener.clearState();
     }
 
     @Override
@@ -185,6 +192,36 @@ public class ScanDeviceAdapter extends RecyclerView.Adapter<ScanDeviceAdapter.Li
     @Override
     public int getItemCount() {
         return mDevices.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        mRecyclerView = recyclerView;
+        mOnItemTouchListener = new ItemSlideHelper(mRecyclerView.getContext(), this);
+        mRecyclerView.addOnItemTouchListener(mOnItemTouchListener);
+    }
+
+    @Override
+    public int getHorizontalRange(RecyclerView.ViewHolder holder) {
+        if (holder.itemView instanceof LinearLayout) {
+            ViewGroup viewGroup = (ViewGroup) holder.itemView;
+            if (viewGroup.getChildCount() == 2) {
+                return viewGroup.getChildAt(1).getLayoutParams().width;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder getChildViewHolder(View childView) {
+        return mRecyclerView.getChildViewHolder(childView);
+    }
+
+    @Override
+    public View findTargetView(float x, float y) {
+        return mRecyclerView.findChildViewUnder(x, y);
     }
 
     public final static class ListItemViewHolder extends RecyclerView.ViewHolder {

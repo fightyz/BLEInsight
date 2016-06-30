@@ -243,10 +243,12 @@ public class SwipeActivity extends AppCompatActivity {
                         currentX = event.getX();
                         currentY = event.getY();
                         float dx = currentX - lastX;
+                        Log.e("onTouchEvent", "hasIgnoreFirstMove = " + hasIgnoreFirstMove);
                         if (dx != 0f && !hasIgnoreFirstMove) {
                             hasIgnoreFirstMove = true;
                             dx = dx / dx;
                         }
+                        Log.e("onTouchEvent", "dx = " + dx + "\tgetContentX() = " + getContentX());
                         if (getContentX() + dx < 0) {
                             setContentX(0);
                         } else {

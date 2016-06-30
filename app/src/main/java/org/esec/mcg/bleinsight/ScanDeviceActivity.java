@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.esec.mcg.bleinsight.adapter.ScanDeviceAdapter;
+import org.esec.mcg.bleinsight.animator.item.LinearItemDecoration;
 import org.esec.mcg.bleinsight.animator.item.SlideInLeftItemAnimator;
 import org.esec.mcg.bleinsight.wrapper.BLEWrapper;
 import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
@@ -51,6 +53,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mScanDeviceAdapter);
         mRecyclerView.setItemAnimator(new SlideInLeftItemAnimator(mRecyclerView));
+        mRecyclerView.addItemDecoration(new LinearItemDecoration(Color.BLACK));
         mRecyclerView.setHasFixedSize(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
