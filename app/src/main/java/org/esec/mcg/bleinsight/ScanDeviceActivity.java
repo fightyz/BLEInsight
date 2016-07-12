@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.ScanResult;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,8 +41,11 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     private RecyclerView mRecyclerView;
     private TextView scanToggle;
 
+//    private boolean isConfigurationChanged = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LogUtils.e("onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
 
@@ -97,7 +102,32 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     }
 
     @Override
+    protected void onStart() {
+        LogUtils.e("onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        LogUtils.e("onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        // 当屏幕布局模式为横屏时
+//        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//                || newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+//            isConfigurationChanged = true;
+//        }
+        LogUtils.e("onConfigurationChanged");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onResume() {
+        LogUtils.e("onResume");
         super.onResume();
 
         if (mBLEWrapper.isBtEnabled() == false) {
@@ -115,6 +145,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
 
     @Override
     protected void onPause() {
+        LogUtils.e("onPause");
         super.onPause();
         stopScanningInit();
 //        mBLEWrapper.stopScanning();
@@ -125,6 +156,18 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     protected void onDestroy() {
         LogUtils.e("onDestroy");
         super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        LogUtils.e("onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        LogUtils.e("onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -147,6 +190,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
         mScanning = true;
         mScanDeviceAdapter.clearList();
         mBLEWrapper.startScanning(SCANNING_TIMEOUT);
+
     }
 
     /**

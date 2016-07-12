@@ -45,16 +45,17 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
         mMaxVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
+    //这里采用的是外部拦截法
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d("onInterceptTouchEvent", "MotionEvent: " + e.getAction());
+        Log.e("onInterceptTouchEvent", "MotionEvent: " + e.getAction());
 
         int action = MotionEventCompat.getActionMasked(e);
         // 这里获得的是点击点相对于容器的坐标，这里的容器是recyclerView而不是其中每一个item
         int x = (int) e.getX();
         int y = (int) e.getY();
 
-        // 如果 RecyclerView 滚动状态不是空闲 targetView 不是空
+        // 如果 RecyclerView 处于滚动状态 targetView 不是空
         if (rv.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
             if (mTargetView != null) {
                 // 将已展开的 item 折叠起来
@@ -79,10 +80,13 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
                 /**
                  * 如果之前有一个已经展开的 item，当此次点击事件没有发生在右侧的菜单中则返回 true，
+                 * 对 ACTION_DOWN 进行拦截，
                  * 如果点击的是右侧菜单那么返回 false，这样做的原因是菜单需要响应 onClick
                  */
                 if (mTargetView != null) {
-                    return !inView(x, y);
+                    boolean tmp = !inView(x, y);
+                    Log.e("onInterceptTouchEvent", "!inView(x, y) = " + tmp);
+                    return tmp;
                 }
 
                 // 查找需要显示菜单的 View；
@@ -96,6 +100,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
                 // 不是左右滑动，不拦截事件
                 if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                    Log.e("onInterceptTouchEvent", "????");
                     return false;
                 }
 
@@ -104,6 +109,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
                 break;
 
             case MotionEvent.ACTION_CANCEL:
+                Log.e("onInterceptTouchEvent", "ACTION_CANCEL");
             case MotionEvent.ACTION_UP:
                 Log.e("onInterceptTouchEvent", "ACTION_UP");
                 /**
@@ -130,7 +136,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
 
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        Log.d("onTouchEvent", "" + e.getAction());
+        Log.e("onTouchEvent", "" + e.getAction());
 
         if (mExpandAndCollapseAnim != null && mExpandAndCollapseAnim.isRunning() || mTargetView == null) {
             return;
@@ -174,7 +180,7 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
     }
 
     /**
-     * 根据 targetView 的 scrollX 计算出 targetView 的便宜，这样能够知道这个 point 是在右侧的菜单中
+     * 根据 targetView 的 scrollX 计算出 targetView 的偏移，这样能够知道这个 point 是在右侧的菜单中
      * @param x
      * @param y
      * @return 是否在右侧的菜单中
@@ -307,10 +313,19 @@ public class ItemSlideHelper implements RecyclerView.OnItemTouchListener {
     }
 
     public interface Callback {
+        /**
+         * 获得右侧菜单的宽度，这里是100dp
+         */
         int getHorizontalRange(RecyclerView.ViewHolder holder);
 
+        /**
+         * 通过 View 获得它所对应的在 RecyclerView 中的 ViewHolder
+         */
         RecyclerView.ViewHolder getChildViewHolder(View childView);
 
+        /**
+         * 通过点击的坐标获得所点击的 View
+         */
         View findTargetView(float x, float y);
     }
 }
