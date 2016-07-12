@@ -42,12 +42,15 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     private TextView scanToggle;
 
 //    private boolean isConfigurationChanged = false;
+    private boolean isRestart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtils.e("onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
+
+        isRestart = false;
 
         mScanDeviceAdapter = new ScanDeviceAdapter(this);
 
@@ -102,6 +105,13 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     }
 
     @Override
+    protected void onRestart() {
+        LogUtils.e("onRestart");
+        isRestart = true;
+        super.onRestart();
+    }
+
+    @Override
     protected void onStart() {
         LogUtils.e("onStart");
         super.onStart();
@@ -139,8 +149,9 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
             finish();
         }
 
-        startScanningInit();
-        invalidateOptionsMenu();
+        if (!isRestart) {
+            startScanningInit();
+        }
     }
 
     @Override
@@ -185,6 +196,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
      * 开始扫描前的一些初始化工作
      */
     public void startScanningInit() {
+
         scanToggle.setText("STOP SCANNING");
         findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         mScanning = true;
