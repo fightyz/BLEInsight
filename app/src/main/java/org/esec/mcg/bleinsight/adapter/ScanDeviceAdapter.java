@@ -32,7 +32,6 @@ implements ItemSlideHelper.Callback {
 
     private RecyclerView mRecyclerView;
     private ItemSlideHelper mOnItemTouchListener;
-
     private ArrayList<BluetoothDevice> mDevices;
     private ArrayList<ScanRecord> mRecords;
     private ArrayList<Integer> mRssis;
@@ -43,6 +42,14 @@ implements ItemSlideHelper.Callback {
     private static boolean repeatEnable = false;
 
     private Handler rssiUpdateHandler = new Handler();
+
+    public ArrayList<BluetoothDevice> getmDevices() {
+        return mDevices;
+    }
+
+    public void setmDevices(ArrayList<BluetoothDevice> mDevices) {
+        this.mDevices = mDevices;
+    }
 
     public ScanDeviceAdapter(Activity parent) {
         super();

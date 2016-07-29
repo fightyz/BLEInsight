@@ -3,6 +3,7 @@ package org.esec.mcg.bleinsight;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanResult;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import org.esec.mcg.bleinsight.wrapper.ScanDeviceUiCallbacks;
 
 import org.esec.mcg.library.logger.LogUtils;
 
+import java.util.ArrayList;
+
 public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallbacks {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
@@ -43,14 +46,13 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
 
 //    private boolean isConfigurationChanged = false;
     private boolean isRestart = false;
+    private boolean isRestore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtils.e("onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
-
-        isRestart = false;
 
         mScanDeviceAdapter = new ScanDeviceAdapter(this);
 
@@ -149,8 +151,15 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
             finish();
         }
 
-        if (!isRestart) {
+        Log.e("isRestore", "" + isRestore);
+        Log.e("list", "" + mScanDeviceAdapter.getItemCount());
+        if (!isRestart && !isRestore) {
             startScanningInit();
+        } else {
+            mScanDeviceAdapter.notifyDataSetChanged();
+            scanToggle.setText("SCAN");
+            findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
+            mScanning = false;
         }
     }
 
@@ -166,6 +175,7 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     @Override
     protected void onDestroy() {
         LogUtils.e("onDestroy");
+        isRestart = false;
         super.onDestroy();
     }
 
@@ -173,12 +183,18 @@ public class ScanDeviceActivity extends Activity implements ScanDeviceUiCallback
     protected void onSaveInstanceState(Bundle outState) {
         LogUtils.e("onSaveInstanceState");
         super.onSaveInstanceState(outState);
+        outState.putBoolean("isRestore", true);
+
+        outState.putParcelableArrayList("devices",mScanDeviceAdapter.getmDevices());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         LogUtils.e("onRestoreInstanceState");
         super.onRestoreInstanceState(savedInstanceState);
+        isRestore = savedInstanceState.getBoolean("isRestore");
+        ArrayList<BluetoothDevice> devices = savedInstanceState.getParcelableArrayList("devices");
+        mScanDeviceAdapter.setmDevices(devices);
     }
 
     @Override
